@@ -1,0 +1,55 @@
+{
+ "v": 1,
+ "app": "stock",
+ "name": "주식 각도기",
+ "url": "https://jjangguss-prog.github.io/stock-gakdogi/",
+ "updated": "2026-10-31T18:56+09:00",
+ "asof": "10/30 마감",
+ "line": "한국 주식 50%·미국 100% · 다음 판정 11/30(월)",
+ "todo": "그날까지 비중은 그대로, 매달 적립은 평소대로",
+ "facts": [
+  {
+   "k": "코스피",
+   "v": "5,731",
+   "d": "−3.48% · 폭풍 81거래일째"
+  },
+  {
+   "k": "S&P500",
+   "v": "7,580",
+   "d": "−1.82% · 구름 조금 1거래일째"
+  },
+  {
+   "k": "한국 계절",
+   "v": "여름 12개월째",
+   "d": "이번 달 가을 신호"
+  },
+  {
+   "k": "미국 계절",
+   "v": "여름 6개월째"
+  }
+ ],
+ "brief": [
+  "주식 각도기 규칙: 한국 주식 50%(10월 말 판정). 11/30(월) 판정 기준선 코스피 6,759, 지금 5,731(−15.2%).",
+  "주식 각도기 규칙: 미국 주식 100%(10월 말 판정). 11/30(월) 판정 기준선 S&P500 7,345, 지금 7,580(+3.2%).",
+  "코스피 날씨 폭풍 81거래일째(1년 고점 대비 −37.1%). 비중은 날씨가 아니라 월말 판정으로만 바꿈, 적립은 평소대로.",
+  "지금 켜진 '하지 말 것': 겁나서 팔고 쉬지 않기"
+ ],
+ "links": [
+  {
+   "label": "지금 할 일",
+   "url": "https://jjangguss-prog.github.io/stock-gakdogi/#todo"
+  },
+  {
+   "label": "종목 판독기",
+   "url": "https://jjangguss-prog.github.io/stock-gakdogi/#reader"
+  },
+  {
+   "label": "업종 공부",
+   "url": "https://jjangguss-prog.github.io/stock-gakdogi/#study"
+  },
+  {
+   "label": "증권사 리포트",
+   "url": "https://jjangguss-prog.github.io/stock-gakdogi/reports/"
+  }
+ ]
+}
