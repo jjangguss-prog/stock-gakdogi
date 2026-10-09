@@ -1,0 +1,16 @@
+{
+  "name": "주식 각도기",
+  "short_name": "주식각도기",
+  "description": "증시의 계절과 오늘의 날씨, 돈이 옮겨 가는 길을 위에서 아래로 보고, 종목을 같은 규칙으로 판독하는 주식 시장판",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#181a1f",
+  "theme_color": "#181a1f",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
