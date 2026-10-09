@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>증권사 리포트</title>
+<meta name="description" content="오늘 나온 증권사 리포트를 쉬운 말로 정리한 주식 각도기의 리포트판">
+<meta name="theme-color" content="#181a1f">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f4f3ef; --surface: #fcfcfb; --raised: #ffffff;
+  --ink: #0b0b0b; --ink2: #52514e; --muted: #7d7b75;
+  --grid: #e1e0d9; --axis: #c3c2b7; --line: rgba(11,11,11,.10);
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --up: #c8372f; --down: #1f63b8; --flat: #6b6a65; --focus: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --raised: #222220;
+    --ink: #ffffff; --ink2: #c3c2b7; --muted: #8f8d86;
+    --grid: #2c2c2a; --axis: #383835; --line: rgba(255,255,255,.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --up: #f07a70; --down: #6da7ec; --flat: #a9a79f;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --raised: #222220;
+  --ink: #ffffff; --ink2: #c3c2b7; --muted: #8f8d86;
+  --grid: #2c2c2a; --axis: #383835; --line: rgba(255,255,255,.10);
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --up: #f07a70; --down: #6da7ec; --flat: #a9a79f;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 60px; }
+body { margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 80px; }
+@media (max-width: 600px) { .wrap { padding: 0 16px 60px; } }
+header.top { padding: 22px 0 8px; display: flex; align-items: flex-end; gap: 12px 16px; flex-wrap: wrap; }
+header.top h1 { margin: 0; font-size: 26px; letter-spacing: -.02em; }
+header.top .sub { color: var(--ink2); font-size: 14px; }
+header.top .gen { margin-left: auto; color: var(--muted); font-size: 13px; text-align: right; }
+.back { display: inline-block; font-size: 13px; color: var(--ink2); text-decoration: none; margin-bottom: 6px; }
+.back:hover { color: var(--ink); }
+nav.sec { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--page) 92%, transparent);
+  backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); margin: 0 -20px; padding: 0 20px; }
+@media (max-width: 600px) { nav.sec { margin: 0 -16px; padding: 0 16px; } }
+nav.sec .in { display: flex; gap: 2px; align-items: center; overflow-x: auto; scrollbar-width: none; }
+nav.sec a { text-decoration: none; padding: 12px 10px; font-size: 14px; color: var(--ink2); white-space: nowrap; border-bottom: 2px solid transparent; }
+nav.sec a.on { color: var(--ink); border-bottom-color: var(--ink); font-weight: 600; }
+nav.sec .theme { margin-left: auto; }
+button, input { font: inherit; color: inherit; }
+a { color: var(--s1); }
+a.chip { color: var(--ink); }
+a.back { color: var(--ink2); }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 10px; cursor: pointer; font-size: 13px; white-space: nowrap; }
+.btn:hover { background: var(--raised); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+section { padding-top: 32px; }
+h2 { font-size: 21px; margin: 0 0 4px; letter-spacing: -.01em; }
+h3 { font-size: 16px; margin: 0 0 8px; }
+.lead { color: var(--ink2); margin: 0 0 14px; max-width: 820px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; min-width: 0; }
+.grid { display: grid; gap: 14px; }
+.grid > * { min-width: 0; }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 860px) { .g2 { grid-template-columns: 1fr; } }
+.muted { color: var(--muted); } .ink2 { color: var(--ink2); } .small { font-size: 13px; } .tiny { font-size: 12px; }
+.up { color: var(--up); } .down { color: var(--down); }
+.sp { flex: 1; }
+.row { display: flex; gap: 8px 10px; align-items: center; flex-wrap: wrap; }
+.note { font-size: 13.5px; color: var(--ink2); background: var(--raised); border: 1px solid var(--line); border-left: 3px solid var(--s3); border-radius: 10px; padding: 10px 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: var(--raised); border-radius: 99px; padding: 4px 11px; font-size: 13px; cursor: pointer; color: var(--ink); text-decoration: none; }
+.chip.on { background: var(--ink); color: var(--page); border-color: var(--ink); font-weight: 600; }
+.hero { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 4px 20px; margin-top: 12px; }
+.three { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 13px 0; border-top: 1px solid var(--line); align-items: start; }
+.three:first-child { border-top: 0; }
+.three .n { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--page); display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+.three .h { font-size: 17.5px; font-weight: 650; line-height: 1.45; letter-spacing: -.01em; }
+.three .k { font-size: 12.5px; color: var(--muted); }
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; }
+.kpi { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--raised); min-width: 0; }
+.kpi .k { font-size: 12px; color: var(--muted); }
+.kpi .v { font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.kpi .d { font-size: 12px; color: var(--ink2); }
+.list { border-top: 1px solid var(--line); }
+.it { border-bottom: 1px solid var(--line); }
+.ith { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 10px 2px; cursor: pointer; }
+.ith:hover { background: var(--raised); }
+.ith .top { display: flex; gap: 6px 10px; align-items: baseline; flex-wrap: wrap; }
+.ith .nm { font-weight: 650; font-size: 15px; }
+.ith .meta { font-size: 12.5px; color: var(--muted); }
+.ith .gp { margin-left: auto; font-variant-numeric: tabular-nums; font-size: 13.5px; white-space: nowrap; }
+.ith .one { font-size: 14px; color: var(--ink2); margin-top: 2px; }
+.ith .one::after { content: " ＋"; color: var(--muted); font-size: 12px; }
+.it.open .ith .one::after { content: " －"; }
+.ex { display: none; padding: 2px 2px 12px; font-size: 13.5px; color: var(--ink2); }
+.it.open .ex { display: block; }
+.ex ul { margin: 4px 0 6px; padding-left: 18px; }
+.ex li { margin: 3px 0; }
+.ex .links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.tag { display: inline-block; font-size: 11.5px; padding: 0 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--ink2); background: var(--raised); white-space: nowrap; line-height: 1.6; }
+.tag.warn { border-color: var(--s4); color: var(--ink); background: color-mix(in srgb, var(--s4) 18%, var(--surface)); }
+.tag.dn { border-color: var(--down); color: var(--down); }
+.tag.upc { border-color: var(--up); color: var(--up); }
+.grp { margin-top: 12px; }
+.grp h3 { margin: 0 0 2px; }
+.grp .gl { font-size: 14px; color: var(--ink2); margin: 0 0 6px; }
+.search { width: 100%; font-size: 16px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--raised); margin-bottom: 8px; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 7px 8px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; font-size: 13.5px; }
+th { color: var(--muted); font-weight: 600; font-size: 12.5px; }
+th:first-child, td:first-child, td.l, th.l { text-align: left; }
+.tw { overflow-x: auto; }
+.chart svg { display: block; width: 100%; height: auto; }
+.gloss { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 24px; }
+@media (max-width: 760px) { .gloss { grid-template-columns: 1fr; } }
+.gloss div { padding: 8px 0; border-top: 1px solid var(--line); }
+.gloss dt { font-weight: 700; } .gloss dd { margin: 2px 0 0; color: var(--ink2); font-size: 14px; }
+footer { margin-top: 40px; color: var(--muted); font-size: 12.5px; }
+.empty { color: var(--muted); font-size: 14px; padding: 10px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <a class="back" href="../">← 주식 각도기</a>
+      <h1>증권사 리포트</h1>
+      <div class="sub">오늘 나온 증권사 리포트를 쉬운 말로 · 평일 08:00·17:30 갱신</div>
+    </div>
+    <div class="gen" id="gen"></div>
+  </header>
+  <nav class="sec" aria-label="구역">
+    <div class="in">
+      <a href="#today">오늘 3줄</a>
+      <a href="#moves">목표가</a>
+      <a href="#sectors">업종</a>
+      <a href="#macro">시황·경제</a>
+      <a href="#all">종목 전체</a>
+      <a href="#trust">믿을 만한가</a>
+      <a href="#glossary">용어</a>
+      <button class="btn theme" id="themeBtn" type="button">밝게/어둡게</button>
+    </div>
+  </nav>
+
+  <section id="today">
+    <div class="note"><b>그래서 뭘 하라고?</b> 리포트는 공부 자료입니다. 사고팔 비중은 <a href="../#todo">주식 각도기 '지금 할 일'</a> 규칙대로 하고, 여기서는 '증권가가 지금 무엇을 보고 있나'만 확인합니다. 증권사 목표가가 1년 안에 실제로 닿은 경우는 <span id="hitLead">많지 않습니다</span>(<a href="#trust">근거</a>).</div>
+    <div class="row" style="margin-top:14px"><h2 style="margin:0" id="dayTitle">오늘 증권가 3줄</h2><span class="sp"></span></div>
+    <div class="chips" id="dayChips" style="margin-top:8px"></div>
+    <div class="hero" id="threeBox"></div>
+    <div class="kpis" id="kpis"></div>
+  </section>
+
+  <section id="moves">
+    <h2>목표가를 바꾼 종목</h2>
+    <p class="lead">같은 증권사가 직전에 낸 목표가와 비교했습니다. 이름을 누르면 요점과 원문 링크가 열립니다.</p>
+    <div class="grid g2">
+      <div class="card"><h3>올린 곳 <span class="muted small" id="upN"></span></h3><div class="list" id="upList"></div></div>
+      <div class="card"><h3>내린 곳 <span class="muted small" id="dnN"></span></h3><div class="list" id="dnList"></div></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3>의견을 바꾼 곳 <span class="muted small">매수·중립·매도 사이</span></h3><div class="list" id="ocList"></div></div>
+      <div class="card"><h3>새로 다루기 시작한 종목 <span class="muted small">그 증권사의 1년 안 첫 리포트</span></h3><div class="list" id="newList"></div></div>
+    </div>
+  </section>
+
+  <section id="sectors">
+    <h2>업종 리포트</h2>
+    <p class="lead">한 업종 전체를 다룬 리포트입니다. 업종 이름별로 묶었습니다.</p>
+    <div class="grid g2" id="secBox"></div>
+  </section>
+
+  <section id="macro">
+    <h2>시황·투자전략·경제·채권</h2>
+    <p class="lead">시장 전체를 다룬 리포트를 같은 주제끼리 묶고, 주제마다 증권가 시각을 한 줄로 적었습니다.</p>
+    <div id="macroBox"></div>
+  </section>
+
+  <section id="all">
+    <h2>종목 리포트 전체</h2>
+    <input class="search" id="q" type="search" placeholder="종목·증권사 이름으로 찾기" aria-label="종목 리포트 찾기">
+    <div class="card"><div class="list" id="allList"></div></div>
+  </section>
+
+  <section id="trust">
+    <h2>증권사 리포트, 얼마나 믿을까</h2>
+    <p class="lead">리포트를 읽기 전에 알아 둘 숫자입니다. 과거 리포트와 실제 주가로 직접 쟀습니다.</p>
+    <div class="kpis" id="trustKpis"></div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3>목표가가 지금 값보다 얼마나 높았나에 따라 <span class="muted small">1년 안에 닿은 비율</span></h3><div class="tw" id="hitTable"></div><p class="small ink2" id="hitNote"></p></div>
+      <div class="card"><h3>증권가 분위기 <span class="muted small">앞 4주 목표가를 바꾼 리포트 중 올린 비율</span></h3><div class="chart" id="moodChart"></div><p class="small ink2" id="moodNote"></p></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h3>증권가 분위기는 앞날을 알려 주나 <span class="muted small" id="verSub"></span></h3><div id="verBox"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2>용어</h2>
+    <div class="card"><dl class="gloss" id="glossBox"></dl></div>
+  </section>
+
+  <footer>요점은 증권사 리포트를 우리 말로 짧게 다시 쓴 것입니다. 원문은 각 증권사의 저작물이니 링크로 확인하세요. 요점의 숫자는 자료와 대조했지만 틀릴 수 있습니다(맞지 않는 숫자가 남으면 '숫자 확인' 표시). 자료: 네이버페이 증권 리서치, 한경컨센서스. 투자 권유가 아닙니다.</footer>
+</div>
+<script>
+const R = {"made":"2026-10-23T17:47+09:00","next":"2026-10-26T08:00+09:00","asof":"2026-10-23","days":["2026-10-23","2026-10-22","2026-10-21","2026-10-20","2026-10-19","2026-10-16","2026-10-15","2026-10-14","2026-10-13","2026-10-12"],"brief":{"three":["메타발 AI투자 우려로 코스피 3.5%·코스닥 3.6% 급락, 금통위 추가인상 시점엔 증권가 시각이 엇갈린다.","목표가는 49건 중 올림 16건·내림 15건, 건설업종 12건 올리고 카지노 등 기타업종 9건 내렸다.","SK하이닉스 10/28·삼성전자 10/29 실적서 장기계약 이익방어력과 CAPEX 구성이 핵심으로 거론된다."],"groups":[{"title":"코스피 급락","line":"메타발 AI투자 우려와 램리서치 실망에 코스피 3.5%·코스닥 3.6% 급락했다는 공통된 시각","ids":["nv:market:37901","hk:653246","nv:market:37893","nv:market:37895","nv:market:37902","hk:653242","nv:market:37904","hk:653226","nv:market:37912","nv:market:37906","nv:market:37894","nv:market:37911","nv:market:37907","nv:invest:40564","nv:invest:40567","nv:invest:40560","nv:economy:13940"]},{"title":"AI 투자심리 엇갈림","line":"메타·테슬라는 투자부담 우려가, 스페이스X·슈퍼마이크로는 바닥 신호라는 시각이 엇갈린다","ids":["nv:invest:40566","nv:invest:40563","nv:invest:40569","nv:economy:13939","nv:economy:13936","hk:653231"]},{"title":"안전자산·금리 하락","line":"미 국채금리 5% 아래로, 엔화 강세에 안전자산 선호가 커졌다는 시각","ids":["nv:economy:13937","nv:economy:13938","nv:invest:40561"]},{"title":"금통위 동결, 전망 엇갈림","line":"10월 기준금리 3.00% 만장일치 동결, 11월 추가인상 전망과 매파적 동결 해석이 엇갈린다는 시각","ids":["nv:debenture:11444","nv:debenture:11442","nv:debenture:11446","nv:debenture:11443","nv:debenture:11447","nv:debenture:11445","hk:653219"]},{"title":"다음주 일정·ESG","line":"다음주 국내외 실적 발표 캘린더와 한국 녹색전환 K-GX 전략이 눈에 띈다","ids":["hk:653223","nv:invest:40559"]}],"street":"메타발 AI투자 우려에 코스피 3.5% 급락, 금통위 추가인상 시점은 증권가 시각이 엇갈린다.","check":[],"made":"2026-10-23T17:43+09:00","n_src":125},"items":[{"id":"nv:company:96980","k":"company","d":"2026-10-23","b":"신한투자증권","c":"005090","n":"SGC에너지","t":"본업은 조정, AIDC는 가속","op":"매수","ot":"buy","gp":66000.0,"pg":40000.0,"mv":"up","ch":65.0,"px":37850.0,"u":"https://stock.naver.com/research/company/96980","src":"네이버","o":"3분기 실적은 기대치 밑돌았지만 AIDC 사업 가치는 더 커짐","tg":"실적 돌아보기","p":["3분기 영업이익 399억원(+56.8% YoY)으로 컨센서스(454억원) 하회","유리사업 53억원 적자가 부진 요인, 발전·에너지는 SMP 상승으로 332억원 증익","AIDC 1차 사업 착공 돌입, 1.27조원 선매매 약정으로 목표가 66,000원 유지"],"tm":[{"t":"SMP","e":"전력을 사고파는 기준이 되는 전력 도매가격"},{"t":"REC","e":"신재생에너지로 만든 전기임을 인증하는 증서, 발전사의 추가 수익원"}],"pd":"2024-07-24"},{"id":"nv:company:97007","k":"company","d":"2026-10-23","b":"하나증권","c":"066970","n":"엘앤에프","t":"환율 및 광물 가격 하락으로 인한 적자","op":"Buy","ot":"buy","gp":140000.0,"pg":273000.0,"mv":"down","ch":-48.7,"px":91200.0,"u":"https://stock.naver.com/research/company/97007","src":"네이버","o":"3분기 영업손실 304억원 전망, 환율·리튬가격 하락 영향","tg":"실적 미리보기","p":["3분기 매출 9048억원, 영업손실 304억원으로 적자전환 전망","환율 하락과 고객사 재고조정으로 매출·영업이익 모두 컨센서스 하회 전망","재고평가손실 제외시 손익분기 수준, 2027년부터 수익성 개선 전망"],"pd":"2026-05-06","sec":["2차전지"]},{"id":"nv:company:96978","k":"company","d":"2026-10-23","b":"신한투자증권","c":"032350","n":"롯데관광개발","t":"역대 최대 드랍액과 함께 찾아온 성장통","op":"매수","ot":"buy","gp":18000.0,"pg":32000.0,"mv":"down","ch":-43.8,"px":10900.0,"u":"https://stock.naver.com/research/company/96978","src":"네이버","o":"드랍액은 역대 최대지만 홀드율 부진으로 3분기 기대치 하회 전망","tg":"실적 미리보기","p":["3분기 매출 1,788억원(-4.2% YoY), 영업이익 373억원(-29.5% YoY)으로 기대치 하회 전망","카지노 드랍액 8,760억원으로 역대 최대 기록, 홀드율은 14.5%로 하락","VIP 영업 전략 전환 중, 방문객·회원수 늘며 중장기 성장 기대"],"tm":[{"t":"드랍액","e":"카지노 손님이 베팅한 총 금액"},{"t":"홀드율","e":"베팅액 중 카지노가 실제로 가져가는 비율"}],"pd":"2026-05-21"},{"id":"nv:company:96990","k":"company","d":"2026-10-23","b":"iM증권","c":"032350","n":"롯데관광개발","t":"홀드율 부진에도 고객 기반 확대 가시화","op":"Buy","ot":"buy","gp":17000.0,"pg":28000.0,"mv":"down","ch":-39.3,"px":10720.0,"u":"https://stock.naver.com/research/company/96990","src":"네이버","o":"홀드율은 부진하지만 고액 고객 늘며 2027년 이익 개선 기대","tg":"실적 미리보기","p":["2025년 카지노 매출 62% 증가하며 사상 최대 실적, 순이익 흑자 전환","8월 사상 최대 드롭액 기록했으나 낮은 홀드율로 매출 성장은 제한적","2027년 만기 전 리파이낸싱 시 이자비용 약 30% 감소 전망"],"tm":[{"t":"리파이낸싱","e":"기존 대출을 새 대출로 바꿔 상환 조건을 조정하는 것"},{"t":"드롭액","e":"고객이 베팅한 총금액"}],"pd":"2026-06-10"},{"id":"nv:company:97009","k":"company","d":"2026-10-23","b":"하나증권","c":"014830","n":"유니드","t":"외부 변수로 실적 부진 vs. 염화칼륨 상방 압력 확대","op":"Buy","ot":"buy","gp":70000.0,"pg":110000.0,"mv":"down","ch":-36.4,"px":54200.0,"u":"https://stock.naver.com/research/company/97009","src":"네이버","o":"3분기 영업이익 적자전환, 환율·운임 부담에 컨센서스 크게 하회","tg":"실적 돌아보기","p":["3분기 영업이익 -21억원으로 적자전환, 환율 하락과 운임 급등이 주요 원인","국내법인은 해상운임 급등과 환율 하락 영향으로 적자전환","중국법인은 계절적 비수기로 칼륨·염소 판매 부진해 적자전환"],"tm":[{"t":"래깅효과","e":"원재료 매입과 판매 시점 차이로 생기는 손익 차이"}],"pd":"2026-04-23","sec":["에너지화학"]},{"id":"nv:company:96988","k":"company","d":"2026-10-23","b":"iM증권","c":"034230","n":"파라다이스","t":"3분기 실적 모멘텀 유효","op":"Buy","ot":"buy","gp":15000.0,"pg":23000.0,"mv":"down","ch":-34.8,"px":9660.0,"u":"https://stock.naver.com/research/company/96988","src":"네이버","o":"일본 인바운드 호조로 3분기 실적 개선 전망, 하얏트 고정비는 과제","tg":"실적 미리보기","p":["9월 누적 방한 일본인 312만명으로 전년대비 17% 증가, 2019년 수준 상회","하얏트 리젠시 인수로 파라다이스시티 전체 객실이 1270실로 늘었고, 콤프객실 비중 20%대가 고정비 부담 요인","3분기 높은 홀드율과 비용 통제로 매출총이익률 전분기 대비 개선 전망"],"tm":[{"t":"홀드율","e":"고객이 베팅한 금액 중 카지노가 실제로 가져가는 비율"},{"t":"콤프","e":"카지노가 고객에게 무료로 주는 숙박·식사 등 서비스"}],"pd":"2026-06-10"},{"id":"nv:company:96976","k":"company","d":"2026-10-23","b":"키움증권","c":"089860","n":"롯데렌탈","t":"조정장에서 주가로 증명하는 중","op":"Buy","ot":"buy","gp":60000.0,"pg":45000.0,"mv":"up","ch":33.3,"px":49850.0,"u":"https://stock.naver.com/research/company/96976","src":"네이버","o":"금리·유가 부담에도 3분기 실적은 기대치 수준으로 예상","tg":"실적 미리보기","p":["3분기 매출 7,797억원(+2.9% YoY), 영업이익 914억원(+2.6% YoY)으로 기대치 부합 전망","공유차 사업 적자폭 완화, 외국인 단기 렌탈 수요 증가세 지속","대주주 변경 관련 위로금 등 비용이 실적 불확실성 요인으로 남음"],"pd":"2026-07-22","sec":["운송"]},{"id":"nv:company:96986","k":"company","d":"2026-10-23","b":"iM증권","c":"096770","n":"SK이노베이션","t":"K엔무브 스페인 ILBOC 공장 투어 후기","op":"Buy","ot":"buy","gp":250000.0,"pg":190000.0,"mv":"up","ch":31.6,"px":140500.0,"u":"https://stock.naver.com/research/company/96986","src":"네이버","o":"SK엔무브 스페인 윤활기유 공장 방문, 시장 변화 속 기회 모색","tg":"이슈","p":["윤활기유 Group3 시장은 플레이어가 적어 정보가 폐쇄적인 시장","이란전쟁 이후 글로벌 기유 시장 변화 속 사업 기회 논의"],"tm":[{"t":"Group3","e":"품질이 높은 고급 윤활기유 등급"}],"pd":"2026-09-16","sec":["2차전지","에너지화학"]},{"id":"nv:company:96987","k":"company","d":"2026-10-23","b":"iM증권","c":"114090","n":"GKL","t":"중국·일본 VIP 성장 지속, 비용 효율화가 관건","op":"Buy","ot":"buy","gp":12000.0,"pg":16000.0,"mv":"down","ch":-25.0,"px":8510.0,"u":"https://stock.naver.com/research/company/96987","src":"네이버","o":"중국·일본 VIP 회복세지만 인건비·콤프 부담으로 수익성은 둔화 전망","tg":"실적 미리보기","p":["2026년 연간 드롭액 4조원 근접 전망, 중국 VIP는 2019년 대비 60% 회복 수준","인건비·콤프 증가 속도가 매출 성장 앞서 매출총이익률 전년 대비 하락 전망","강남 코엑스 영업장 임대 2035년까지 갱신해 불확실성 해소"],"tm":[{"t":"드롭액","e":"고객이 베팅한 총금액"},{"t":"콤프","e":"카지노가 고객에게 무료로 주는 숙박·식사 등 서비스"}],"pd":"2026-06-10"},{"id":"nv:company:96982","k":"company","d":"2026-10-23","b":"신한투자증권","c":"215000","n":"골프존","t":"낮아진 기대치, 높아진 배당 매력","op":"매수","ot":"buy","gp":55500.0,"pg":73000.0,"mv":"down","ch":-24.0,"px":34850.0,"u":"https://stock.naver.com/research/company/96982","src":"네이버","o":"국내사업 역성장은 이어지지만 해외 성장과 배당 매력은 유효","tg":"실적 미리보기","p":["3분기 해외 매출 비중 22.3%(+2.1%p YoY), 4분기 30.4%(-1.9%p YoY) 전망","국내사업 역성장 폭은 하반기 줄어들지만 본격 회복은 2027년 기대","주당배당금 4,000원 유지 시 배당수익률 10% 상회 전망"],"pd":"2026-04-24"},{"id":"nv:company:96979","k":"company","d":"2026-10-23","b":"신한투자증권","c":"105630","n":"한세실업","t":"비우호적인 변수 투성이","op":"매수","ot":"buy","gp":11000.0,"pg":14000.0,"mv":"down","ch":-21.4,"px":8520.0,"u":"https://stock.naver.com/research/company/96979","src":"네이버","o":"3분기 실적은 괜찮지만 4분기 환율이 발목 잡을 변수","tg":"실적 미리보기","p":["3분기 매출 6,058억원(+12% YoY), 영업이익 485억원(+31% YoY)으로 개선 전망","월마트·타깃 등 대형 유통업체 주문 정상화가 물량 증가 견인","4분기 원달러 환율 하락 예상돼 실적에 불리하게 작용할 것으로 봄"],"pd":"2025-11-14","sec":["생활소비재"]},{"id":"nv:company:97011","k":"company","d":"2026-10-23","b":"한화투자증권","c":"028050","n":"삼성E&A","t":"입이 떡 벌어졌다면, 일단 매수","op":"Buy","ot":"buy","gp":84000.0,"pg":70000.0,"mv":"up","ch":20.0,"px":55400.0,"u":"https://stock.naver.com/research/company/97011","src":"네이버","o":"3분기 영업이익 깜짝 증가, 목표가도 올려잡음","tg":"실적 돌아보기","p":["3분기 영업이익 5006억 원, 전년 동기 대비 183.6% 증가해 시장 예상 크게 상회","사우디 현장 환입 등으로 분기 매출이익률 21.5% 기록","바레인 현장 비용 반영돼 순이익은 예상 수준, 추후 환입 가능성 있음"],"tm":[{"t":"매출이익률(GPM)","e":"매출에서 원가를 뺀 뒤 매출로 나눈 비율"}],"pd":"2026-10-06","sec":["건설"]},{"id":"nv:company:96999","k":"company","d":"2026-10-23","b":"대신증권","c":"010120","n":"LS ELECTRIC","t":"여전히 업사이클 초기단계일 뿐. 업사이드 존재","op":"Buy","ot":"buy","gp":250000.0,"pg":300000.0,"mv":"down","ch":-16.7,"px":161400.0,"u":"https://stock.naver.com/research/company/96999","src":"네이버","o":"업사이클 초기 단계, 데이터센터 배전시스템 점유율 상승 전망","tg":"업황","p":["미국 하이퍼스케일러·온사이트 발전업체향 수주, 공급 리드타임 12개월로 경쟁사 2~3년보다 빠름","Bloom Energy 연료전지용 배전반, ESS용 배터리제어반·전력변환장치 매출 확대 속도 빨라질 것으로 기대","저압직류(LVDC) 시장에서 선도업체 경쟁력 확보한 것으로 판단"],"tm":[{"t":"하이퍼스케일러","e":"대규모 데이터센터를 운영하는 글로벌 IT기업"},{"t":"LVDC","e":"저압 직류 전력을 공급하는 배전 방식"}],"pd":"2026-10-13","sec":["전력설비"]},{"id":"nv:company:96981","k":"company","d":"2026-10-23","b":"신한투자증권","c":"028050","n":"삼성E&A","t":"앞으로가 더 기대된다","op":"매수","ot":"buy","gp":79000.0,"pg":68000.0,"mv":"up","ch":16.2,"px":55400.0,"u":"https://stock.naver.com/research/company/96981","src":"네이버","o":"일회성 이익이 수익성 개선과 주주환원 확대로 이어져","tg":"실적 돌아보기","p":["관계사 수주 기반 실적 고성장이 지속되는 점을 긍정적으로 평가","반복된 일회성 이익이 지속 가능한 수익성 상향으로 연결됐다고 판단","2027년 신규수주 확대 여부가 향후 주가의 핵심 변수로 전망"],"pd":"2026-10-13","sec":["건설"]},{"id":"hk:653236","k":"company","d":"2026-10-23","b":"SK증권","c":"034220","n":"LG디스플레이","t":"IT방어주? : PSR 0.15배","op":"매수","ot":"buy","gp":10500.0,"pg":12500.0,"mv":"down","ch":-16.0,"u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653236","src":"한경","o":"3분기 영업이익 부진, 4분기·2027년 IT 세트 수요 불확실성 커짐","tg":"실적 돌아보기","p":["3분기 영업이익 2506억원으로 전년대비 42% 감소, 예상보다 부진한 수준","환율 하락에 따른 외화평가이익으로 순이익은 흑자전환","4분기·2027년 영업이익 추정 하향, IT 세트 수요 둔화 우려 반영"],"tm":[{"t":"PSR","e":"주가를 매출로 나눈 값, 낮을수록 저평가로 봄"}],"pd":"2026-10-08"},{"id":"nv:company:96992","k":"company","d":"2026-10-23","b":"신한투자증권","c":"034220","n":"LG디스플레이","t":"고군분투","op":"매수","ot":"buy","gp":11000.0,"pg":13000.0,"mv":"down","ch":-15.4,"px":7230.0,"u":"https://stock.naver.com/research/company/96992","src":"네이버","o":"IT OLED용 신기술 FLiPP 발표, 미래 기술 리더십 확보 노력","tg":"이슈","p":["FMM 없이 RGB 픽셀을 독립 형성하는 패터닝 기술로 개구율·휘도·전력효율 개선","8세대 원장 기반 공정으로 기존 인프라 활용, 공정속도·원가 경쟁력 확보","8.6세대 신규투자(15K당 4조원 이상) 없이 IT OLED 시장 공략 가능"],"tm":[{"t":"FMM","e":"OLED 화소를 만들 때 쓰는 미세금속마스크"},{"t":"개구율","e":"화면에서 실제로 빛이 나오는 면적의 비율"}],"pd":"2026-10-06"},{"id":"nv:company:96983","k":"company","d":"2026-10-23","b":"iM증권","c":"034220","n":"LG디스플레이","t":"완만한 실적 회복세","op":"Buy","ot":"buy","gp":10000.0,"pg":11500.0,"mv":"down","ch":-13.0,"px":7230.0,"u":"https://stock.naver.com/research/company/96983","src":"네이버","o":"3분기 실적 낮아진 기대치엔 부합했지만 수익성은 둔화","tg":"실적 돌아보기","p":["3분기 매출 6.3조원(-10% YoY), 영업이익 2,530억원(-41% YoY)으로 기대치 부합","메모리 가격 급등에 따른 IT기기 수요 둔화로 IT용 패널 출하량이 전분기 대비 약 10% 감소한 것으로 추정","아이폰18 바 타입에서 동사 패널 공급 점유율 확대될 것으로 봄"],"pd":"2026-09-21"},{"id":"nv:company:96995","k":"company","d":"2026-10-23","b":"iM증권","c":"028050","n":"삼성E&A","t":"반복되는 서프라이즈, 그리고 훌륭한 주주환원","op":"Buy","ot":"buy","gp":78000.0,"pg":69000.0,"mv":"up","ch":13.0,"px":55400.0,"u":"https://stock.naver.com/research/company/96995","src":"네이버","o":"2027년 실적 추정 크게 올리고 자사주 소각 반영해 목표가 상향","tg":"실적 미리보기","p":["2027년 주당순이익(EPS) 추정치 30.2% 상향, 6900억원 자사주 소각 반영","2026년 신규수주 19조원 이상, 2027년에도 16조원 이상 수주로 전망","4분기도 일회성 이익 반영한 높은 영업이익 예고"],"pd":"2026-09-18","sec":["건설"]},{"id":"nv:company:97000","k":"company","d":"2026-10-23","b":"SK증권","c":"068270","n":"셀트리온","t":"옴리클로, 3대시장 First-mover의 완성","op":"매수","ot":"buy","gp":280000.0,"pg":247823.0,"mv":"up","ch":13.0,"px":194300.0,"u":"https://stock.naver.com/research/company/97000","src":"네이버","o":"2030년까지 2천억 달러 규모 바이오시밀러 시장 열릴 것으로 전망","tg":"업황","p":["블록버스터 의약품 특허 만료로 2030년까지 약 4000억 달러 매출 공백 발생 전망","품질·생산설비·직판체계 갖춘 기업 중심으로 시장 재편될 것으로 전망","셀트리온은 미국·유럽·일본 직판망 보유해 기회요인으로 판단"],"tm":[{"t":"바이오시밀러","e":"오리지널 바이오의약품과 효능이 동등한 복제약"}],"pd":"2026-08-03","sec":["바이오","헬스케어"]},{"id":"nv:company:96991","k":"company","d":"2026-10-23","b":"SK증권","c":"062040","n":"산일전기","t":"단기 실적보다 강한 수주","op":"매수","ot":"buy","gp":280000.0,"pg":320000.0,"mv":"down","ch":-12.5,"px":173900.0,"u":"https://stock.naver.com/research/company/96991","src":"네이버","o":"3분기 실적 환율·태풍에 소폭 하회하나 수주는 역대 최대 전망","tg":"실적 미리보기","p":["3분기 영업이익 620억원 추정, 컨센서스 대비 소폭 하회","원/달러 환율 하락과 태풍에 따른 선적 지연이 주요 원인","신규 수주는 신재생 중심으로 역대 분기 최대 규모로 전망"],"tm":[{"t":"환헤지","e":"환율 변동 위험을 줄이기 위한 금융 거래"}],"pd":"2026-08-10","sec":["전력설비","중공업"]},{"id":"nv:company:97005","k":"company","d":"2026-10-23","b":"하나증권","c":"005090","n":"SGC에너지","t":"본업보다 중요한 AI DC 사업 진행 상황","op":"Buy","ot":"buy","gp":68000.0,"pg":76000.0,"mv":"down","ch":-10.5,"px":37850.0,"u":"https://stock.naver.com/research/company/97005","src":"네이버","o":"3분기 실적 기대치 하회, 12월부터 SMP 정상화되며 반등 기대","tg":"실적 돌아보기","p":["발전·에너지 일회성 비용과 유리 부문 적자로 3분기 실적 기대치 하회","건설·부동산 매출 순연 가능성 있으나 마진은 방어되는 중","SMP 하락에도 12월부터 정상화되며 기대감 회복 가능성"],"tm":[{"t":"SMP","e":"전력 도매시장에서 정해지는 전기 가격 기준"}],"pd":"2026-10-06"},{"id":"nv:company:97008","k":"company","d":"2026-10-23","b":"하나증권","c":"028050","n":"삼성E&A","t":"4분기까지 약속한 서프","op":"Buy","ot":"buy","gp":73000.0,"pg":67000.0,"mv":"up","ch":9.0,"px":55400.0,"u":"https://stock.naver.com/research/company/97008","src":"네이버","o":"3분기 깜짝 실적, 4분기도 비슷한 수준 자신","tg":"실적 돌아보기","p":["3분기 영업이익 5,006억원으로 컨센서스 대비 크게 상회, 일회성 이익 약 2,000억원 추정","얀부 발전소 최종정산으로 충당금 1,000억원 환입, 나머지는 비용절감·정산 효과","3분기 신규수주 9.4조원, 사우디 SAN7 등 대형 프로젝트 수주 반영"],"tm":[{"t":"본드콜","e":"공사 지연 등 계약 위반 시 보증기관이 발주처에 대신 지급하는 비용"}],"pd":"2026-10-02","sec":["건설"]},{"id":"hk:653232","k":"company","d":"2026-10-23","b":"LS증권","c":"028050","n":"삼성E&A","t":"New Normal","op":"Buy","ot":"buy","gp":76000.0,"pg":70000.0,"mv":"up","ch":8.6,"u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653232","src":"한경","o":"3분기 영업이익 컨센서스 98% 상회, 수주 목표도 크게 상향","tg":"실적 돌아보기","p":["3분기 영업이익 5006억원으로 전년대비 184% 증가, 컨센서스 대비 98% 상회","사우디 얀부 충당금 환입 등 일회성 요인 있으나 경상적 마진 개선으로 평가","올해 수주 목표 12조원에서 19조원으로 상향, 자사주 매입·소각 발표"],"pd":"2026-07-08","sec":["건설"]},{"id":"nv:company:96994","k":"company","d":"2026-10-23","b":"유진투자증권","c":"028050","n":"삼성E&A","t":"건설업종 시총 1위의 위엄","op":"Buy","ot":"buy","gp":82000.0,"pg":77000.0,"mv":"up","ch":6.5,"px":55400.0,"u":"https://stock.naver.com/research/company/96994","src":"네이버","o":"실적·수주·주주환원 모두 호조, 연간 가이던스 대폭 상향","tg":"실적 돌아보기","p":["3분기 영업이익 5,006억원으로 컨센서스를 거의 100% 상회하는 서프라이즈","2026년 영업이익 가이던스 8,000억원에서 1조4,000억원으로 상향","약 7,800억원 규모 자기주식 매입 결정, 이 중 6,900억원은 소각 예정"],"tm":[{"t":"가이던스","e":"회사가 제시하는 연간 실적 목표치"}],"pd":"2026-07-24","sec":["건설"]},{"id":"nv:company:97010","k":"company","d":"2026-10-23","b":"교보증권","c":"028050","n":"삼성E&A","t":"3Q26 Review: 실적과 수주 모두 한 단계 도약","op":"Buy","ot":"buy","gp":71000.0,"pg":67000.0,"mv":"up","ch":6.0,"px":55400.0,"u":"https://stock.naver.com/research/company/97010","src":"네이버","o":"3분기 영업이익 컨센서스 102% 상회, 수주도 한 단계 도약","tg":"실적 돌아보기","p":["3분기 영업이익 5,006억원, 전년 대비 184% 증가해 컨센서스 102% 상회","첨단산업·뉴에너지 매출 급증했지만 화공 매출은 전년보다 17% 감소","사우디 발전 충당금 환입과 정산이익 반영돼 영업이익률 17.2%로 개선"],"pd":"2026-07-24","sec":["건설"]},{"id":"nv:company:96975","k":"company","d":"2026-10-23","b":"IBK투자증권","c":"028050","n":"삼성E&A","t":"3Q26 Review: 실적 서프라이즈, 가이던스 상향, 자사주 매입/소각","op":"매수","ot":"buy","gp":72000.0,"pg":68000.0,"mv":"up","ch":5.9,"px":55400.0,"u":"https://stock.naver.com/research/company/96975","src":"네이버","o":"3분기 영업이익 서프라이즈, 연간 가이던스 상향 및 자사주 매입·소각","tg":"실적 돌아보기","p":["3분기 영업이익 5006억원으로 시장 기대치를 100.5% 상회","사우디 얀부 프로젝트 충당금 환입 약 1000억원 등 일회성 이익 반영","일회성 제외해도 전 사업부문 매출총이익률 개선, 기초 수익성 강화로 판단"],"pd":"2026-07-24","sec":["건설"]},{"id":"nv:company:96998","k":"company","d":"2026-10-23","b":"대신증권","c":"028050","n":"삼성E&A","t":"깜짝 놀랄 만한 실적","op":"Buy","ot":"buy","gp":75000.0,"pg":71000.0,"mv":"up","ch":5.6,"px":55400.0,"u":"https://stock.naver.com/research/company/96998","src":"네이버","o":"3분기 깜짝 실적에 연간 가이던스도 큰 폭 상향","tg":"실적 돌아보기","p":["3분기 영업이익 5,006억원으로 전년 대비 184% 증가, 컨센서스 크게 상회","2026년 영업이익 가이던스 8,000억원에서 1조4,000억원으로 올림","특별 자사주 매입 7,800억원 결정, 이 중 6,900억원 소각 예정"],"tm":[{"t":"가이던스","e":"회사가 제시하는 연간 실적 목표치"}],"pd":"2026-10-08","sec":["건설"]},{"id":"nv:company:97001","k":"company","d":"2026-10-23","b":"미래에셋증권","c":"028050","n":"삼성E&A","t":"다시 봐도 놀라운 숫자와 자신감 + 자사주 공시","op":"매수","ot":"buy","gp":76000.0,"pg":72000.0,"mv":"up","ch":5.6,"px":55400.0,"u":"https://stock.naver.com/research/company/97001","src":"네이버","o":"서프라이즈 실적에 자사주 매입까지 더해져 자신감 확인","tg":"실적 돌아보기","p":["3분기 영업이익 5,006억원으로 시장 예상 대비 98% 상회","매출 증가로 판관비율이 6.6%에서 4.3%로 낮아져 이익 개선에 기여","바레인 현장 본드콜 비용 반영돼 세전이익은 2,987억원에 그침"],"tm":[{"t":"판관비율","e":"매출 대비 판매관리비 비중"}],"pd":"2026-09-30","sec":["건설"]},{"id":"nv:company:96996","k":"company","d":"2026-10-23","b":"신한투자증권","c":"054950","n":"제이브이엠","t":"비수기에도 돋보이는 수익성","op":"매수","ot":"buy","gp":34000.0,"pg":36000.0,"mv":"down","ch":-5.6,"px":22000.0,"u":"https://stock.naver.com/research/company/96996","src":"네이버","o":"3분기 비수기에도 수출 호조로 수익성 선방 전망","tg":"실적 미리보기","p":["3분기 매출 412억원으로 전년대비 3.7% 증가, 영업이익 92억원으로 전년대비 20.8% 증가 추정","북미 파트너사 재고 확보 주문과 영국 신규 영업 개시로 수출 성장 지속","목표가 36000원에서 34000원으로 하향, 적용 기준연도는 2027년으로 변경"],"pd":"2026-04-30","sec":["헬스케어"]},{"id":"nv:company:97004","k":"company","d":"2026-10-23","b":"유안타증권","c":"028050","n":"삼성E&A","t":"실적, 수주, 주주환원: 뭐 하나 부족한 게 없다!","op":"Buy","ot":"buy","gp":77000.0,"pg":73000.0,"mv":"up","ch":5.5,"px":55400.0,"u":"https://stock.naver.com/research/company/97004","src":"네이버","o":"3분기 영업이익 컨센서스 98% 상회, 일회성 넘어 이익 체력도 개선","tg":"실적 돌아보기","p":["3분기 영업이익 5,006억원으로 전년 대비 184% 증가, 컨센서스 98% 상회","사우디 얀부 발전 충당금 환입 약 1,000억원이 서프라이즈 주요 요인","일회성 제외해도 전 부문 매출총이익률이 회사 내부 목표치 상회"],"tm":[{"t":"GPM","e":"매출에서 매출원가를 뺀 매출총이익률"}],"pd":"2026-10-16","sec":["건설"]},{"id":"nv:company:96977","k":"company","d":"2026-10-23","b":"키움증권","c":"028050","n":"삼성E&A","t":"Top Pick, 단순히 좋다는 말로는 부족한 수준","op":"Buy","ot":"buy","gp":75000.0,"pg":73000.0,"mv":"up","ch":2.7,"px":55400.0,"u":"https://stock.naver.com/research/company/96977","src":"네이버","o":"3분기 영업이익 컨센서스 두 배 수준 상회","tg":"실적 돌아보기","p":["3분기 영업이익 5,006억원으로 전년 대비 83% 증가, 컨센서스 대비 크게 웃돎","얀부 프로젝트 충당금 환입과 각 부문 정산이익이 서프라이즈 견인","바레인 BMP 현장 본드콜 비용 반영돼 당기순이익은 2,167억원에 그침"],"tm":[{"t":"본드콜","e":"계약 위반 시 보증기관이 발주처에 대신 지급하는 비용"}],"pd":"2026-10-02","sec":["건설"]},{"id":"nv:company:97013","k":"company","d":"2026-10-23","b":"한화투자증권","c":"294870","n":"IPARK현대산업개발","t":"[3Q26 Review] 밸류에이션 트리거를 기다리며","op":"Buy","ot":"buy","gp":32000.0,"pg":32000.0,"mv":"same","ch":0.0,"px":21000.0,"u":"https://stock.naver.com/research/company/97013","src":"네이버","o":"3분기 영업이익 컨센서스 12% 상회, 외주주택 원가율 개선과 자체주택 매출 증가가 겹치며 실적 호조","tg":"실적 돌아보기","p":["3분기 영업이익 1658억원으로 전년대비 127% 증가, 컨센서스 대비 12% 상회","자체주택 매출 20% 증가가 외주주택 매출 감소를 상쇄하며 매출 증가 전환","3분기 누계 신규수주 4.86조원으로 연간 계획의 74% 달성"],"pd":"2026-07-16","sec":["건설"]},{"id":"nv:company:96989","k":"company","d":"2026-10-23","b":"iM증권","c":"035250","n":"강원랜드","t":"리노베이션 영향으로 감익 지속","op":"Buy","ot":"buy","gp":18000.0,"mv":"new","px":14250.0,"u":"https://stock.naver.com/research/company/96989","src":"네이버","o":"리노베이션으로 실적 둔화 지속되지만 배당·자사주 매입이 주가 지지","tg":"실적 미리보기","p":["2025년 배당성향 59.2%, 자사주 매입 110억원으로 주주환원율 62.6% 기록","올해도 주주환원율 60% 목표, 2028년 시설 정상화 전까지 실적 공백 예상","폐광기금 소송 승소 시 약 2000억원 환입 가능성으로 추가 환원 여력"],"tm":[{"t":"배당성향","e":"순이익 중 배당으로 나눠주는 비율"}]},{"id":"nv:company:96984","k":"company","d":"2026-10-23","b":"iM증권","c":"353200","n":"대덕전자","t":"신규시설투자 공시 코멘트: 투자 로드맵이 ‘30년까지 확장","op":"Buy","ot":"buy","gp":190000.0,"pg":190000.0,"mv":"same","ch":0.0,"px":127500.0,"u":"https://stock.naver.com/research/company/96984","src":"네이버","o":"6,150억원 신규 투자 공시, 2030년까지 캐파 확장 로드맵 마련","tg":"이슈","p":["최근 6개월 결의 투자 합계 1.4조원, 자기자본의 150% 상회","LTA 체결 전 선제 투자는 고객사 물량 협의가 상당히 진전됐다는 신호로 해석","메모리기판·FC-CSP 수급이 타이트해져 BT기판 포함한 추가 투자 결정"],"tm":[{"t":"LTA","e":"고객사와 장기간 물량과 가격을 미리 약속하는 계약"},{"t":"FC-BGA","e":"반도체 칩을 기판에 연결하는 고급 패키지 기판 종류"}],"pd":"2026-10-19"},{"id":"nv:company:96997","k":"company","d":"2026-10-23","b":"한국투자증권","c":"086450","n":"동국제약","t":"전통 제약사가 화장품도 잘 파네요","op":"없음","ot":"none","u":"https://stock.naver.com/research/company/96997","src":"네이버","o":"제약사에서 화장품·건강기능식품까지 확장하며 체질이 바뀌는 중","tg":"새로 다룸","p":["1H26 매출 5,099억원(+11.5% YoY), 영업이익 534억원(+12.6% YoY) 기록","화장품 포함 헬스케어 사업부 매출 비중 1H26 39.8%로 가장 커짐","미국·일본 등 판매국 확대로 화장품 수출 모멘텀 4분기도 지속될 것으로 봄"],"tm":[{"t":"영업 레버리지","e":"매출이 늘수록 고정비 부담이 줄어 이익이 더 빨리 늘어나는 효과"}],"sec":["바이오","헬스케어"]},{"id":"nv:company:96974","k":"company","d":"2026-10-23","b":"NICE평가정보","c":"403360","n":"라피치","t":"대화형 AI Agent부터 AI 인프라 네트워크까지, End-to-End 턴키 솔루션 기업","op":"없음","ot":"none","u":"https://stock.naver.com/research/company/96974","src":"네이버","o":"음성인식 기반 AI 상담 솔루션에 AI 인프라 사업까지 더한 기업","tg":"새로 다룸","p":["2025년 조달청 우수조달물품 선정, 금융·공공 분야 보안·정확성 강화","2026년 서경엔씨에스 합병으로 AI 인프라 구축 역량까지 확보"],"tm":[{"t":"RAG","e":"AI가 답변할 때 외부 자료를 찾아 참고하는 기술"},{"t":"AICC","e":"인공지능으로 상담을 처리하는 콜센터 시스템"}]},{"id":"nv:company:96973","k":"company","d":"2026-10-23","b":"NICE평가정보","c":"007210","n":"벽산","t":"고성능 단열재를 중심으로 건축공간의 안전성과 쾌적성을 구현하는 종합 건축자재 기업","op":"없음","ot":"none","u":"https://stock.naver.com/research/company/96973","src":"네이버","o":"무기단열재 중심 종합 건축자재 기업, 주방·환기 사업까지 확대","tg":"새로 다룸","p":["그라스울·미네랄울 생산, 2026년 생산능력 약 18만톤으로 확대 전망","하츠(환기·주방기기), 영우화스너 등 종속회사로 사업 포트폴리오 확장","에어로겔 등 고기능 단열재, 스마트 환기기술 중심 제품 고도화 추진"],"tm":[{"t":"그라스울·미네랄울","e":"유리나 암석을 녹여 섬유로 만든 단열재"}],"sec":["건설"]},{"id":"hk:653222","k":"company","d":"2026-10-23","b":"메리츠증권","c":"028050","n":"삼성E&A","t":"3Q26 Review: 숫자가 나오는 성장주","op":"Buy","ot":"buy","gp":76000.0,"pg":76000.0,"mv":"same","ch":0.0,"u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653222","src":"한경","o":"3분기 영업이익 컨센서스 99% 상회, 수주 목표 19조원으로 상향","tg":"실적 돌아보기","p":["3분기 영업이익 5006억원으로 전년대비 184% 증가, 일회성 이익 약 2300억원 포함","수주 가이던스 12조원에서 19조원으로 상향, 2027년에도 18조원 수주 전망","자사주 약 6900억원 매입·소각 발표, MSCI 편입 기대감도 존재"],"tm":[{"t":"MSCI 편입","e":"글로벌 주가지수에 포함돼 해외 자금 유입이 기대되는 것"}],"pd":"2026-07-24","sec":["건설"]},{"id":"hk:653233","k":"company","d":"2026-10-23","b":"LS증권","c":"003230","n":"삼양식품","t":"환율 우려를 불식시킬 모멘텀","op":"Buy","ot":"buy","gp":1800000.0,"pg":1800000.0,"mv":"same","ch":0.0,"u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653233","src":"한경","o":"3분기 매출·영업이익 모두 큰 폭 증가 전망, 미중 수출이 견인","tg":"실적 미리보기","p":["3분기 매출 8023억원, 영업이익 1825억원으로 전년대비 각각 27%·39% 증가 전망","유럽 수출은 거래선 교체로 일시 둔화, 2027년 1분기부터 회복 전망","2027년 중국 공장 가동과 추가 해외 증설로 중장기 성장 기대"],"pd":"2026-08-18","sec":["생활소비재"]},{"id":"nv:company:97012","k":"company","d":"2026-10-23","b":"한화투자증권","c":"306200","n":"세아제강","t":"3분기 눈높이 하회, 4분기 회복 전망","op":"Buy","ot":"buy","gp":207000.0,"pg":207000.0,"mv":"same","ch":0.0,"px":129100.0,"u":"https://stock.naver.com/research/company/97012","src":"네이버","o":"3분기 실적 눈높이 하회, 4분기부터 회복 전망","tg":"실적 미리보기","p":["3분기 영업이익 190억원 추정, 컨센서스 대비 19.8% 하회","환율 하락과 원가 반영 시차로 수출 마진 둔화","내수는 비수기 물량 감소와 원가 부담으로 수익성 낮아진 것으로 추정"],"tm":[{"t":"컨센서스","e":"여러 증권사 예상치의 평균값"}],"pd":"2026-07-22","sec":["철강"]},{"id":"nv:company:96985","k":"company","d":"2026-10-23","b":"iM증권","c":"068270","n":"셀트리온","t":"WAC 2026 참관 후기: 꽃가루 휘날리며","op":"Buy","ot":"buy","gp":260000.0,"pg":260000.0,"mv":"same","ch":0.0,"px":194300.0,"u":"https://stock.naver.com/research/company/96985","src":"네이버","o":"일본 알레르기 바이오시밀러 시장, 구조적 성장 가능성 확인","tg":"이슈","p":["옴리클로 일본 미출시로 당장 실적 기여는 적으나 중장기 성장 가능성 있다고 판단","일본 정부가 2030년까지 바이오시밀러 점유율 목표 달성 위해 환자 부담금 인상 등 추진 중","일본 직판체제 전환과 현지생산 전략 맞물려 출시 초기 처방 상승 가능할 것으로 전망"],"tm":[{"t":"바이오시밀러","e":"오리지널 바이오의약품과 효능이 동등한 복제약"}],"pd":"2026-07-28","sec":["바이오","헬스케어"]},{"id":"nv:company:97006","k":"company","d":"2026-10-23","b":"하나증권","c":"112610","n":"씨에스윈드","t":"환율 약세, 매출 이연에도 양호한 마진 기대","op":"Buy","ot":"buy","gp":80000.0,"pg":80000.0,"mv":"same","ch":0.0,"px":44700.0,"u":"https://stock.naver.com/research/company/97006","src":"네이버","o":"3분기 실적 기대치 부합, 환율·매출이연에도 마진은 양호할 전망","tg":"실적 미리보기","p":["환율 하락으로 원화환산 매출 줄고 타워 일부 매출 4분기로 이연 전망","하부구조물 외형 줄어도 인센티브 덕에 높은 이익률 지속 전망","연간 수주목표 17억달러에 소폭 못 미칠 가능성 존재"],"pd":"2026-08-10"},{"id":"nv:company:97002","k":"company","d":"2026-10-23","b":"유안타증권","c":"259630","n":"엠플러스","t":"[다시봐] 비교우위 수익성과 가시권내 신규사업","op":"없음","ot":"none","px":9090.0,"u":"https://stock.naver.com/research/company/97002","src":"네이버","o":"2차전지 조립장비 수익성 개선, 유럽 방산 배터리 수주로 신사업 기대","tg":"이슈","p":["영업이익률 21~22년 적자에서 25년 13.3%, 1H26 17.1%로 개선","저가 수주 대신 수익성 위주 선별 수주로 매출원가 비중 하향","10월 유럽 배터리기업서 방산용 각형 노칭·스태킹 장비 수주"],"tm":[{"t":"노칭·스태킹","e":"배터리 전극을 자르고(노칭) 겹쳐 쌓는(스태킹) 조립 공정"}],"sec":["2차전지"]},{"id":"nv:company:96972","k":"company","d":"2026-10-23","b":"NICE평가정보","c":"095270","n":"웨이브일렉트로","t":"탐색기·유도조종 핵심기술로 K-방산 정밀타격 밸류체인을 잇는 전자부품 전문기업","op":"없음","ot":"none","u":"https://stock.naver.com/research/company/96972","src":"네이버","o":"탐색기·유도조종 부품으로 K-방산 밸류체인에 참여하는 전자부품 기업","tg":"새로 다룸","p":["현궁·비궁·해궁·천검 등 다수 유도무기 사업에 부품 공급 중","천궁-II 중동 수출, 해궁 말레이시아 수출 등을 중장기 성장요인으로 제시","2021년부터 방산부문 성장 국면 진입, 천궁3·L-SAM2 등 신규 개발 참여"],"tm":[{"t":"탐색기","e":"유도무기가 표적을 찾아 추적하는 장치"},{"t":"유도조종장치","e":"미사일이 목표로 날아가도록 방향을 조종하는 장치"}],"sec":["방산"]},{"id":"nv:company:96971","k":"company","d":"2026-10-23","b":"NICE평가정보","c":"039290","n":"인포뱅크","t":"기업 메시징 선도기업, 금융·모빌리티·AICC로 AX 도약 채비","op":"없음","ot":"none","u":"https://stock.naver.com/research/company/96971","src":"네이버","o":"기업 메시징 선도기업, AI 결합한 금융·모빌리티 사업으로 확장 준비","tg":"새로 다룸","p":["1.5만개 이상 기업고객 보유, 연간 100억건 이상 메시지 처리 중","발송량 중심에서 AI CRM 결합 '고객당 가치' 플랫폼으로 전환 진행","금융·모빌리티 AX 신사업은 레퍼런스를 쌓는 초기 단계로 파악"],"tm":[{"t":"AX","e":"AI를 활용해 업무 방식을 바꾸는 것"},{"t":"AICC","e":"AI 기반으로 운영하는 고객센터"}],"sec":["소프트웨어"]},{"id":"nv:company:96970","k":"company","d":"2026-10-23","b":"서울평가정보","c":"104540","n":"코렌텍","t":"인공관절 설계·3D 프린팅·환자 맞춤형 기술 기반의 정형외과 임플란트 전문기업","op":"없음","ot":"none","u":"https://stock.naver.com/research/company/96970","src":"네이버","o":"인공관절 임플란트 전문기업, 고령화 수요와 미국시장 확대 추진","tg":"새로 다룸","p":["2025년 우성제약 지분 매각, 중국법인 청산으로 인공관절 사업에 집중","UCR 경골삽입물 미국 FDA 인허가 등 제품 고도화 지속 추진"],"tm":[{"t":"무시멘트형","e":"뼈시멘트 없이 뼈와 직접 붙는 임플란트 방식"}],"sec":["헬스케어"]},{"id":"nv:company:96969","k":"company","d":"2026-10-23","b":"서울평가정보","c":"452280","n":"한선엔지니어링","t":"정밀 유체제어 기술 기반으로 고부가 시장으로 사업영역을 확장하는 피팅·밸브 전문기업","op":"없음","ot":"none","u":"https://stock.naver.com/research/company/96969","src":"네이버","o":"산업용 피팅·밸브에서 반도체·수소·ESS용 고부가 제품으로 영역 확대","tg":"새로 다룸","p":["2025년 매출 전년대비 30.2% 증가 추정","반도체 UHP, 수소·연료전지, ESS용 유체제어 부품으로 성장축 확장"],"tm":[{"t":"UHP","e":"반도체 공정에 쓰이는 초고순도 배관·부품"}],"sec":["중공업"]},{"id":"nv:company:97003","k":"company","d":"2026-10-23","b":"유안타증권","c":"004710","n":"한솔테크닉스","t":"[다시봐] 26년보다 개선될 27년","op":"없음","ot":"none","px":8250.0,"u":"https://stock.naver.com/research/company/97003","src":"네이버","o":"인수한 자회사들 실적이 온기로 반영되는 2027년이 더 기대된다는 내용","tg":"이슈","p":["한솔윌텍 프로브카드 사업, 26년 인수 효과 온기 반영되며 27년 실적 개선 전망","한솔아이원스는 반도체 장비업체 투자 확대 수혜로 2H26 이후 매출·수익성 개선 기대","공장 효율화와 멕시코 법인 신설 등 체질 개선 성과는 27년부터 확인될 것으로 봄"],"tm":[{"t":"프로브카드","e":"반도체가 잘 만들어졌는지 검사할 때 쓰는 부품"},{"t":"CAPEX","e":"공장이나 장비를 짓는 데 쓰는 설비투자 비용"}]},{"id":"nv:company:96993","k":"company","d":"2026-10-23","b":"신한투자증권","c":"200670","n":"휴메딕스","t":"리투오가 이끄는 성장, 배당이 더하는 매력","op":"없음","ot":"none","px":23600.0,"u":"https://stock.naver.com/research/company/96993","src":"네이버","o":"리투오 판매 확대로 3분기 분기 최대 매출 전망","tg":"실적 미리보기","p":["3분기 매출 538억원(+31.6%), 영업이익 131억원(+46.3%) 전망","리투오 매출 155억원, 제조사 증설로 공급 확대가 성장 견인","자체 필러 벨피엔 상업화와 해외 필러 수출 회복이 수익성 좌우할 전망"],"tm":[{"t":"PN·HA 복합필러","e":"두 가지 성분을 섞어 만든 필러 제품"}],"sec":["바이오","헬스케어"]},{"id":"nv:industry:46614","k":"industry","d":"2026-10-23","b":"DS투자증권","ind":"음식료","t":"방어 and Beyond","u":"https://stock.naver.com/research/industry/46614","src":"네이버","o":"음식료 3분기 실적, 내수 부진·비용 부담에 컨센서스 하회로 본다","tg":"실적 미리보기","p":["KT&G는 수출 담배 호조와 부동산 수익 인식으로 컨센서스 상회로 전망","풀무원, 코스맥스엔비티, 노바렉스, CJ프레시웨이, 빙그레는 컨센서스 하회로 전망","유가발 부자재·물류비 부담과 희망퇴직 등 일회성 비용이 실적에 반영"],"tm":[{"t":"컨센서스","e":"여러 증권사 전망치의 평균값"}],"sec":["생활소비재"]},{"id":"nv:industry:46613","k":"industry","d":"2026-10-23","b":"DS투자증권","ind":"기타","t":"SK하이닉스 ADR 괴리, 계속 방치하기는 어려워","u":"https://stock.naver.com/research/industry/46613","src":"네이버","o":"SK하이닉스 ADR과 본주 가격 차이 46.8%로 확대, 방치 어려워","tg":"이슈","p":["7월 상장 후 ADR-본주 괴리율이 25.6%에서 현재 46.8%로 확대","기초자산과 배당이 같은데도 한국 주식이 더 싸게 거래","코리아 디스카운트 상징으로 비칠 수 있어 시장 우려 커짐"],"tm":[{"t":"ADR","e":"외국 주식을 미국에서 거래할 수 있게 만든 예탁증서"},{"t":"괴리율","e":"같은 자산의 두 가격 차이를 비율로 나타낸 것"}]},{"id":"nv:industry:46603","k":"industry","d":"2026-10-23","b":"IBK투자증권","ind":"반도체","t":"유틸리티와 서브팹으로 확산되는 증설 수혜","u":"https://stock.naver.com/research/industry/46603","src":"네이버","o":"삼성E&A 역대 최대 실적, 반도체 증설 수혜가 설비 전반으로 확산","tg":"실적 돌아보기","p":["3분기 영업이익 5,006억 원으로 시장 예상보다 98.4% 많아","연간 수주 전망 12조에서 19조 원, 영업이익 전망 8천억에서 1.4조 원으로 상향","평택 P4·P5와 미국 테일러 프로젝트 기반 첨단산업 수주잔고 8.9조 원"],"tm":[{"t":"수주잔고","e":"아직 완료하지 않고 남아있는 계약 금액"}],"sec":["반도체"]},{"id":"nv:industry:46602","k":"industry","d":"2026-10-23","b":"IBK투자증권","ind":"인터넷포탈","t":"[IBKS Daily] 인터넷/게임","u":"https://stock.naver.com/research/industry/46602","src":"네이버","o":"금융당국, 네이버·두나무 결합 독점 우려에 안전장치 검토","tg":"이슈","p":["네이버파이낸셜-두나무 결합으로 거래소 시장 지배력 우려 제기","금융위는 약 1천만 명이 이용하는 거래소가 충분한 자기자본과 운영능력을 갖춰야 한다고 강조","스테이블코인 제도 관련 협의 마무리해 국회 입법 지원할 계획"],"tm":[{"t":"스테이블코인","e":"가치가 달러 등에 고정되도록 설계된 암호화폐"}],"sec":["소프트웨어"]},{"id":"nv:industry:46601","k":"industry","d":"2026-10-23","b":"IBK투자증권","ind":"자동차","t":"[Europe Tracker] 유럽 자동차 9월: BEV YoY +72.9%, YTD 점유율 22.7%로 가솔린 추월","u":"https://stock.naver.com/research/industry/46601","src":"네이버","o":"유럽 9월 BEV 판매 72.9% 급증, 누적 점유율 가솔린 추월","tg":"업황","p":["1~9월 누적 BEV 점유율 22.7%로 가솔린 21.2% 상회","프랑스·독일 BEV 판매 각각 107.5%, 94.7% 증가하며 성장 견인","테슬라와 BYD 등 중국 OEM도 고성장, 현대차는 감소세 지속"],"sec":["자동차"]},{"id":"nv:industry:46600","k":"industry","d":"2026-10-23","b":"IBK투자증권","ind":"조선","t":"수에즈막스까지 번지고 있는 탱커 운임 강세","u":"https://stock.naver.com/research/industry/46600","src":"네이버","o":"수에즈막스 탱커 운임도 급등, 중형 조선소까지 발주 수혜 확산 전망","tg":"업황","p":["10월 3주차 수에즈막스 운임 735,440달러/일로 급등, VLCC와 격차 축소","선령 15년 이상 노후선 비중 43%인데 수주잔고는 29%에 그쳐","대한조선·삼성중공업이 수에즈막스 발주 확대 수혜 클 것으로 전망"],"tm":[{"t":"VLCC","e":"초대형 원유운반선"},{"t":"용선료","e":"선박을 빌려 쓰는 대가로 내는 돈"}],"sec":["조선"]},{"id":"nv:industry:46599","k":"industry","d":"2026-10-23","b":"IBK투자증권","ind":"기타","t":"[META] 2026년 3분기 실적 발표 정리","u":"https://stock.naver.com/research/industry/46599","src":"네이버","o":"메타 3분기 매출은 늘었지만 영업이익 줄고 현금흐름은 적자 전환","tg":"실적 돌아보기","p":["3분기 매출 93.7조원으로 전년대비 26.1% 증가","영업이익 18.9조원으로 전년대비 36.8% 감소, 영업이익률 20.1%","Capex 50.6조원으로 전년대비 80.2% 급증, FCF는 적자 3.0조원"],"tm":[{"t":"FCF","e":"기업이 쓰고 남긴 실제 현금"},{"t":"Capex","e":"공장·설비 등에 쓰는 투자비"}]},{"id":"hk:653245","k":"industry","d":"2026-10-23","b":"IBK투자증권","t":"[IBKS Spot Comment] 유틸리티와 서브팹으로 확산되는 증설 수혜","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653245","src":"한경","o":"반도체 Fab 증설 수혜가 유틸리티·서브팹 장비사로 확산 중","tg":"업황","p":["삼성E&A 3분기 영업이익 5006억 원, 시장 예상보다 98.4% 많음","Fab 투자는 골조 다음 유틸리티·서브팹 장비 발주로 이어질 전망","서브팹 장비사 유니셈·GST 올해 최대 실적 기록할 것으로 전망"],"tm":[{"t":"서브팹","e":"클린룸 아래층에 설치되는 공정 보조 설비 공간"}]},{"id":"hk:653244","k":"industry","d":"2026-10-23","b":"IBK투자증권","t":"[인터넷/게임] IBKS Daily","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653244","src":"한경","o":"인터넷·게임 업종 주요 종목의 시세와 지표를 모은 일일 자료","tg":"기타"},{"id":"hk:653243","k":"industry","d":"2026-10-23","b":"IBK투자증권","t":"[IBKS Spot Comment] Valero가 보여준 정유의 이익 공식","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653243","src":"한경","o":"미국 정유사 Valero 3분기 실적 급증, 정제마진 확대가 견인","tg":"이슈","p":["Valero 3분기 순이익 68억 달러, 전년 동기보다 6배 이상 증가","배럴당 정제마진 39.24달러로 전년 동기 대비 약 3배 상승","공급망 정상화 지연될수록 가동 설비의 높은 마진 지속 가능성"],"tm":[{"t":"정제마진","e":"원유를 가공해 만든 석유제품과 원유 가격의 차이"}]},{"id":"hk:653234","k":"industry","d":"2026-10-23","b":"LS증권","t":"9월 유럽 판매량: 중국과 경쟁 심화 지속","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653234","src":"한경","o":"9월 유럽 차 판매 10.2% 증가, 중국·전기차가 성장 주도","tg":"업황","p":["9월 유럽 신차 판매 136.3만대, 전년 동월 대비 10.2% 증가","현대차 판매 17.5% 감소, 기아는 13.7% 증가로 엇갈린 흐름","BYD·Chery 등 중국계 판매 급증, 전기차 비중 30.5%로 상승"],"tm":[{"t":"BEV","e":"배터리로만 움직이는 순수 전기차"}]},{"id":"nv:industry:46605","k":"industry","d":"2026-10-23","b":"iM증권","ind":"기타","t":"카지노 업황 점검: 정책 불확실성 해소가 관건","u":"https://stock.naver.com/research/industry/46605","src":"네이버","o":"카지노 4사 목표주가 하향, 3분기는 파라다이스만 컨센서스 상회 전망","tg":"업황","p":["7월 납부금 상한 인상 보도 이후 주요 카지노주 17~25% 하락","파라다이스 3분기 영업이익 544억원으로 전년대비 38% 증가 전망","롯데관광개발·GKL은 홀드율 하락으로 영업이익 컨센서스 하회 전망"],"tm":[{"t":"홀드율","e":"카지노가 베팅액 중 실제로 벌어들이는 비율"},{"t":"드롭액","e":"고객이 현금을 칩으로 바꾼 베팅 총액"}]},{"id":"nv:industry:46604","k":"industry","d":"2026-10-23","b":"iM증권","ind":"건설","t":"Optimus 양산 시작 확인: 관련 유니버스 점검","u":"https://stock.naver.com/research/industry/46604","src":"네이버","o":"테슬라 옵티머스 양산 시작, 연 100만대 체제까지 1년 이상 걸릴 전망","tg":"이슈","p":["프리몬트 라인서 옵티머스 초기 생산 착수, 표준 품질 충족","초기 생산 1~2만대는 데이터 수집용으로 활용 계획","27년말부터 위험·반복작업 산업 중심으로 외부 판매 목표"],"sec":["건설"]},{"id":"hk:653251","k":"industry","d":"2026-10-23","b":"iM증권","t":"로보틱스 : Optimus 양산 시작 확인: 관련 유니버스 점검","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653251","src":"한경","o":"테슬라 옵티머스 로봇 제한 양산 시작 확인, 국내 공급망 점검","tg":"이슈","p":["테슬라 프리몬트 공장서 옵티머스 초기 양산 착수, 생산 품질 기준 충족","연 100만대 생산 체제까지 1년 이상 걸릴 것으로 전망","손 관절(덱스트러스) 개발이 여전한 병목, 관련 국내 업체 주목 필요"],"tm":[{"t":"덱스트러스","e":"사람 손처럼 정교하게 움직이는 로봇 손 부품"}]},{"id":"nv:industry:46609","k":"industry","d":"2026-10-23","b":"유안타증권","ind":"기타","t":"[유안타이슈테마] PHP 취약점 발견의 내포된 의미","u":"https://stock.naver.com/research/industry/46609","src":"네이버","o":"AI로 찾아낸 PHP 보안 취약점, 전세계 웹사이트 70%에 영향","tg":"이슈","p":["로그인 없이 코드 실행·시스템 장악 가능한 PHP 취약점 2건 발견","단순 업데이트나 임시 조치로는 완전히 해결되지 않는 점이 핵심 우려","전세계 웹사이트 약 70%가 PHP로 구동돼 영향 범위 큼"],"tm":[{"t":"PHP","e":"웹페이지를 동적으로 만드는 서버용 프로그래밍 언어"}]},{"id":"hk:653217","k":"industry","d":"2026-10-23","b":"유진투자증권","t":"스타쉽 15차 발사 일정은 11월","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653217","src":"한경","o":"스페이스X, 11월 스타쉽 15차 발사서 두 단 동시 회수 첫 시도","tg":"이슈","p":["슈퍼헤비 부스터와 상단부를 한 비행에서 모두 발사대로 회수하는 더블 캐치 시도","성공하면 발사 비용 구조 자체가 낮아질 것으로 전망","과거 사례처럼 일정이 연기될 가능성도 있음"],"tm":[{"t":"더블 캐치","e":"로켓의 두 부분을 모두 발사대에서 받아 회수하는 방식"}]},{"id":"nv:industry:46607","k":"industry","d":"2026-10-23","b":"유진투자증권","ind":"기타","t":"스타쉽 15차, 사상 첫 1, 2단 동시 회수 도전","u":"https://stock.naver.com/research/industry/46607","src":"네이버","o":"스타쉽 15차 비행서 1·2단 동시 회수 첫 도전","tg":"이슈","p":["11월 15차 비행서 슈퍼헤비와 상단부 모두 발사대 회수 시도","상단부 캐치는 이번이 처음, 지구 궤도 돌고 복귀해 정밀 유도 필요","성공하면 완전 재사용 체계로 발사 비용 기준선 자체가 낮아질 전망"],"tm":[{"t":"슈퍼헤비 부스터","e":"스타쉽의 1단 로켓, 아래쪽 큰 추진 장치"}]},{"id":"nv:industry:46606","k":"industry","d":"2026-10-23","b":"유진투자증권","ind":"기타","t":"안녕하세요 데일리에요 (로봇/방산/조선)","u":"https://stock.naver.com/research/industry/46606","src":"네이버","o":"로봇·방산·조선 업계 주요 뉴스 모음","tg":"이슈","p":["테슬라 옵티머스 양산 개시, 외부판매 확대는 2027년 말 이후로 예상","록히드마틴 3분기 매출·EPS 모두 시장 예상 상회, 연간 가이던스 상향","머스크, 초대형 컨테이너선 발주 후보를 중국 조선소 2곳으로 좁혀"]},{"id":"nv:industry:46612","k":"industry","d":"2026-10-23","b":"하나증권","ind":"전기전자","t":"높아지는 패키지 기판의 위상","u":"https://stock.naver.com/research/industry/46612","src":"네이버","o":"AI 반도체용 FCBGA 기판 공급부족 장기화 전망, 삼성전기 수혜 기대","tg":"업황","p":["Nvidia, FCBGA 생산능력 3년간 2.5배 확대 목표 발표","삼성전기, 세종·부산 신규라인으로 27년 하반기부터 물량 확대 전망","기판 대면적화·고다층화로 Capa Loss 커지며 공급부족 지속 전망"],"tm":[{"t":"FCBGA","e":"AI 반도체 칩을 메인보드에 연결하는 고성능 패키지 기판"}],"sec":["전력설비"]},{"id":"nv:industry:46611","k":"industry","d":"2026-10-23","b":"하나증권","ind":"통신","t":"무선 통신 장비주 반등에 대비","u":"https://stock.naver.com/research/industry/46611","src":"네이버","o":"미 기지국 투자는 자금경색 영향 적어, 무선장비주 반등 기대","tg":"투자 전략","p":["기지국 투자는 통신사 주도라 데이터센터와 달리 회사채 경색 영향 적을 것","중간선거 결과와 무관하게 통신 관련 법안·대중 장비규제 변화 가능성 낮다고 판단","통신서비스는 SKT, 장비는 RFHIC·KMW 등 무선장비주 매수 추천"]},{"id":"nv:industry:46610","k":"industry","d":"2026-10-23","b":"하나증권","ind":"유틸리티","t":"유틸리티 공기업 3Q 판매실적 점검","u":"https://stock.naver.com/research/industry/46610","src":"네이버","o":"가스공사·지역난방공사 3분기 판매실적과 재생에너지 설비 확대 점검","tg":"업황","p":["가스공사 3분기 도시가스용 판매 전년비 +6.7%, 발전용 -14.3% 기록","지역난방공사 3분기 열 판매 +0.8%, 전기 판매 -42.6% 기록","10월 21일 기준 재생에너지 설비용량이 석탄을 상회"],"tm":[{"t":"SMP","e":"전력 도매시장에서 정해지는 전기 가격"}]},{"id":"nv:industry:46608","k":"industry","d":"2026-10-23","b":"한국투자증권","ind":"화장품","t":"Bi-weekly:Charts of week: 양호한 업황과 그렇지 못한 주가","u":"https://stock.naver.com/research/industry/46608","src":"네이버","o":"10월 화장품 수출 호조 지속, 주가는 시장 변동성에 흔들려","tg":"업황","p":["10월 1~20일 화장품 수출 전년대비 80% 증가, 미국향 수출도 견고","이번 주 코스맥스 주가 하락폭 가장 커, 달바글로벌은 반등","3분기 실적 눈높이 조정 끝나고 해외노출 낮은 한국콜마를 관심주로 제시"],"sec":["화장품"]},{"id":"nv:market:37901","k":"market","d":"2026-10-23","b":"IBK투자증권","t":"[IBKS Daily] Morning Brief(261023)","u":"https://stock.naver.com/research/daily/37901","src":"네이버","o":"코스피 3.5% 급락, 반도체주 중심 AI 투자 우려 확산","tg":"이슈","p":["미국 빅테크 실적 발표 이후에도 AI 투자 수익성 우려 지속되며 국내 반도체주 급락","한국은행 긴축 기조 유지도 증시에 부담 요인으로 작용","SK하이닉스, 주주 반발과 주가 약세에 솔리다임 나스닥 상장 계획 철회"]},{"id":"hk:653249","k":"market","d":"2026-10-23","b":"IBK투자증권","t":"start with ibks","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653249","src":"한경","o":"국내외 주가지수, 환율, 금리 등 시장 데이터 모음표","tg":"기타"},{"id":"hk:653246","k":"market","d":"2026-10-23","b":"IBK투자증권","t":"IBKS Morning Brief","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653246","src":"한경","o":"코스피·코스닥 급락, AI 투자 수익성 우려와 한은 긴축 영향","tg":"이슈","p":["코스피 3.5%, 코스닥 3.6% 하락하며 반도체주 중심 급락","SK하이닉스는 주주 반발로 솔리다임 나스닥 IPO와 프리IPO를 철회","정부는 코스닥 승강제에 절대평가 도입 추진, 기준 충족 시 승격 허용"]},{"id":"nv:market:37893","k":"market","d":"2026-10-23","b":"KB증권","t":"10/22 KB 리서치 장마감코멘트","u":"https://stock.naver.com/research/daily/37893","src":"네이버","o":"코스피·코스닥 3%대 급락, 반도체·2차전지 매도 확산","tg":"이슈","p":["SK하이닉스 등 반도체 대형주 되돌림, 외국인·기관 모두 순매도","건설업만 상승, 삼성E&A 3분기 영업이익 5006억원으로 전년比 184% 증가","한국은행 기준금리 3.00% 동결, 시장 예상에 부합"]},{"id":"nv:market:37895","k":"market","d":"2026-10-23","b":"KB증권","t":"10/23 KB 리서치 모닝코멘트","u":"https://stock.naver.com/research/daily/37895","src":"네이버","o":"메타 실적발 AI 투자 우려로 기술주 급락, 유가도 급등","tg":"이슈","p":["메타 3분기 실적은 예상 상회했지만 잉여현금흐름 적자 전환과 AI 투자 확대 부담 부각","램리서치 4분기 매출 가이던스 실망에 AI 기업 실적 둔화 우려 확산","SK하이닉스, 손자회사 솔리다임의 나스닥 상장 계획 철회"],"tm":[{"t":"잉여현금흐름(FCF)","e":"회사가 번 돈에서 투자비용을 뺀 나머지 현금"}]},{"id":"hk:653231","k":"market","d":"2026-10-23","b":"LS증권","t":"[마켓 BEAT] 크기보다 신뢰, 어닝 시즌 본격 시작","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653231","src":"한경","o":"어닝시즌 본격화, 이익 크기보다 지속 신뢰가 주가 바닥의 관건","tg":"시장 전망","p":["코스피 주간 -2.37%, AI 투자 기대와 우려가 번갈아 지수 흔들어","SK하이닉스 10/28, 삼성전자 10/29 실적서 장기계약 이익방어력과 CAPEX 구성이 핵심으로 거론","반도체와 소부장 주가 디커플링 점차 강화될 것으로 전망"],"tm":[{"t":"CAPEX","e":"공장·설비 등에 쓰는 투자비용"},{"t":"PER","e":"주가를 주당순이익으로 나눈 값, 낮으면 저평가로 해석"}]},{"id":"hk:653230","k":"market","d":"2026-10-23","b":"LS증권","t":"[TGIF] 시장이 물가 상승에 민감하게 반응한 이유","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653230","src":"한경","o":"최근 물가 상승에 시장이 민감하게 반응한 이유를 다룬 주간 리포트","tg":"기타"},{"id":"nv:market:37902","k":"market","d":"2026-10-23","b":"SK증권","t":"SK증권 아침에 슥_2026.10.23","u":"https://stock.naver.com/research/daily/37902","src":"네이버","o":"메타발 AI 투자 우려로 기술주 급락, 다우는 강보합","tg":"이슈","p":["메타 잉여현금흐름 적자와 AI 투자비용 부담에 반도체주 매도 확대","필수소비재·헬스케어 등 방어주는 상대적으로 강세"]},{"id":"nv:market:37896","k":"market","d":"2026-10-23","b":"SK증권","t":"SK증권 Global Carbon Market Daily_261023","u":"https://stock.naver.com/research/daily/37896","src":"네이버","o":"국제유가 급등과 탄소배출권 시장 관련 뉴스 모음","tg":"기타"},{"id":"hk:653242","k":"market","d":"2026-10-23","b":"SK증권","t":"wake up! 아침에 슼","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653242","src":"한경","o":"메타 AI 투자부담에 기술주 급락, 유럽 은행주도 동반 약세","tg":"시장 전망","p":["메타의 자유현금흐름 적자와 AI 투자비용 부담으로 반도체주 매도 확대","방키테르 조달비용 증가와 바클레이스 실적 부진에 은행지수 4.2% 급락","CATL 이익성장 저조에 이차전지 투자심리도 위축"]},{"id":"hk:653241","k":"market","d":"2026-10-23","b":"SK증권","t":"[메타 플랫폼스] Muse의 업사이드는 어디까지일까?","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653241","src":"한경","o":"메타 신규 AI 앱 Muse, 쇼핑 수수료로 새 성장동력 기대","tg":"이슈","p":["Muse의 2028년 말 ARR을 기본 400억 달러, 낙관 시 최대 1930억 달러로 추정","3분기 광고 노출 10%, 광고 단가 14% 상승하며 기존 사업도 개선세","3분기 처음 FCF 적자 기록, 4분기 확대되며 내년 중 추가 자금조달 필요로 전망"],"tm":[{"t":"ARR","e":"매년 꾸준히 들어올 것으로 보는 반복 매출 규모"},{"t":"FCF","e":"영업으로 번 돈에서 투자비를 뺀 실제 쓸 수 있는 현금"}],"ck":1},{"id":"hk:653240","k":"market","d":"2026-10-23","b":"SK증권","t":"[Spotify] SPOT 3Q26 Review: 숫자보다 질을 선택","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653240","src":"한경","o":"스포티파이 3분기 실적, 가이던스 소폭 상회하며 질적 개선 확인","tg":"실적 돌아보기","p":["3분기 매출 49.7억 유로는 가이던스와 같은 수준이었고 영업이익 6.72억 유로만 가이던스보다 소폭 높았음","구독자 9% 증가와 가격 인상 효과로 ARPU 7.5% 올라 구독매출 17% 성장","비용은 3분기 정점 지나 4분기부터 완화되며 영업이익률 개선으로 전망"],"tm":[{"t":"ARPU","e":"가입자 1명당 평균 매출"}]},{"id":"hk:653238","k":"market","d":"2026-10-23","b":"SK증권","t":"[ESG snapshot] 녹색전환 시작하는 우리나라, 외연 넓히는 국제 사회","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653238","src":"한경","o":"정부 녹색전환 전략 발표, JPMorgan도 지속가능금융 전략 재조정","tg":"이슈","p":["정부는 예산 200조원과 기후금융 등을 더해 10년간 1,000조원 규모를 마련하는 한국형 녹색대전환(K-GX) 전략을 발표","2030년 재생에너지 100GW 조기 달성과 전력망 개선을 추진 계획으로 제시","JPMorgan은 경제성·안보·신뢰성·지속가능성 네 키워드로 금융전략 재조정"]},{"id":"nv:market:37904","k":"market","d":"2026-10-23","b":"iM증권","t":"[Market Time] AI 투자 부담과 솔리다임 상장 철회","u":"https://stock.naver.com/research/daily/37904","src":"네이버","o":"美 반도체 급락과 솔리다임 상장 철회가 국내 증시에 영향 전망","tg":"시장 전망","p":["메타 실적 후 AI 투자비용·현금흐름 우려에 필라델피아반도체지수 급락","솔리다임 美 상장 철회로 SK하이닉스 중복상장 우려는 완화 전망","안전자산 선호 속 금리 하락은 증시엔 우호적이지 않다고 판단"]},{"id":"hk:653219","k":"market","d":"2026-10-23","b":"대신증권","t":"morning meeting brief","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653219","src":"한경","o":"10월 금통위 기준금리 3.00% 동결, 11월 추가 인상 가능성 전망","tg":"경제","p":["10월 금통위 기준금리 3.00%로 동결, 7·8월 연속 인상 이후 숨고르기 행보로 평가","고성장·물가·환율 부담 여전해 11월과 내년 1분기 추가 인상 전망, 최종금리 3.50%로 전망","최근 증시 급락은 실적 훼손이 아닌 AI 투자 우려와 매크로 부담이 겹친 결과로 진단"],"tm":[{"t":"금통위","e":"한국은행이 기준금리를 정하는 회의"}]},{"id":"hk:653226","k":"market","d":"2026-10-23","b":"상상인증권","t":"상상인 Macro Daily","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653226","src":"한경","o":"메타 실적 우려로 코스피 3.52% 급락, 안전자산 선호 강화","tg":"시장 전망","p":["코스피 전일대비 3.52% 하락한 5,533.77pt 마감, 메타 잉여현금흐름 적자전환에 AI 수익성 의구심 부각","미국채 10년물 금리 16.6bp 급락해 한 달 만에 5.0%선 하회, 안전자산 수요 유입","국고채 10년물은 금통위 만장일치 동결에 강세, 총재 긴축 발언에 장단기 혼조"],"tm":[{"t":"잉여현금흐름(FCF)","e":"기업이 영업으로 벌어 투자 후 남긴 현금"},{"t":"bp","e":"금리 변동 단위, 1bp는 0.01%포인트"}]},{"id":"nv:market:37912","k":"market","d":"2026-10-23","b":"신한투자증권","t":"마켓레이더 - 안전자산 선호에 미 10Y 5%↓&코스피 5,400↓ (10월 23일)","u":"https://stock.naver.com/research/daily/37912","src":"네이버","o":"미 기술주 AI 투자 우려에 코스피 2.6% 급락, 5,391선 마감","tg":"시장 전망","p":["메타 -7.0%, FCF 적자 전환에 AI 투자 수익성 우려 확산","반도체지수(SOX) -6.7%, 테슬라 -3.1% 등 기술주 동반 약세","미 10년물 금리 5% 아래로, 안전자산 선호 심리 반영"],"tm":[{"t":"FCF","e":"기업이 실제 자유롭게 쓸 수 있는 현금"}]},{"id":"nv:market:37908","k":"market","d":"2026-10-23","b":"신한투자증권","t":"Daily 신한생각 (10월 23일)","u":"https://stock.naver.com/research/daily/37908","src":"네이버","o":"신한투자증권의 하루치 리포트 모음, 여러 산업·종목 분석 수록","tg":"기타"},{"id":"nv:market:37906","k":"market","d":"2026-10-23","b":"신한투자증권","t":"Daily Market Digest (10월 23일)","u":"https://stock.naver.com/research/daily/37906","src":"네이버","o":"메타발 AI 우려로 미국 기술주 급락, 국내도 동반 하락","tg":"이슈","p":["메타 주가 7% 하락과 잉여현금흐름 적자 전환에 투자심리 악화","코스피 3.5% 하락하며 장중 5500선 이탈","SK하이닉스, 솔리다임 미국 상장 추진 중단 공식 발표로 중복상장 우려 완화"],"tm":[{"t":"잉여현금흐름(FCF)","e":"회사가 번 돈에서 투자비용을 뺀 나머지 현금"}]},{"id":"nv:market:37905","k":"market","d":"2026-10-23","b":"신한투자증권","t":"Global IT H/W Weekly(10월 4주차)","u":"https://stock.naver.com/research/daily/37905","src":"네이버","o":"반도체 변동성 구간서 엔비디아·TSMC를 방어주로 꼽음","tg":"투자 전략","p":["엔비디아는 AI 핵심 밸류체인에 지속 투자하며 변동성 제한적이라고 평가","TSMC는 견조한 실적과 설비 확장 지속, 경쟁사 추격은 예상보다 더딘 상황"]},{"id":"nv:market:37900","k":"market","d":"2026-10-23","b":"신한투자증권","t":"Japan Weekly(10월 4주차)","u":"https://stock.naver.com/research/daily/37900","src":"네이버","o":"일본 금리 인상 수혜주와 MLCC·유니클로 성장주 주목","tg":"업황","p":["미쓰비시UFJ, 기준금리 인상에 따른 순이자마진 개선 지속 전망","무라타, AI 서버용 MLCC 수요 증가로 가격·출하량 동반 상승 전망","패스트리테일링, GU 구조조정에 매출·이익 턴어라운드 기대"],"tm":[{"t":"MLCC","e":"전자기기 회로에 쓰이는 작은 세라믹 콘덴서 부품"},{"t":"순이자마진(NIM)","e":"은행이 대출과 예금 금리 차이로 버는 수익률"}]},{"id":"nv:market:37899","k":"market","d":"2026-10-23","b":"신한투자증권","t":"Global 에너지 Weekly(10월 4주차); NextEra가 제시한 전력시장 방향성","u":"https://stock.naver.com/research/daily/37899","src":"네이버","o":"데이터센터發 전력 수요 급증에 전력화ETF·블룸에너지 주목","tg":"업황","p":["미 데이터센터 투자로 전력가격 변동성 커져 전력화ETF 수혜 전망","블룸에너지, 연료전지로 데이터센터 전력난에 빠르게 대응 가능","블룸에너지-브룩필드 계약 규모 50억→250억달러로 확대"],"tm":[{"t":"연료전지","e":"화학반응으로 바로 전기를 만드는 발전 장치"}]},{"id":"nv:market:37898","k":"market","d":"2026-10-23","b":"신한투자증권","t":"Global 산업재 Weekly(10월 4주차)","u":"https://stock.naver.com/research/daily/37898","src":"네이버","o":"항공엔진·미사일·우주 부품 수요 확대에 하우멧·록히드마틴 주목","tg":"업황","p":["하우멧에어로스페이스, 항공엔진 부품 생산 증가와 애프터마켓 수요로 마진 개선 전망","록히드마틴, PAC-3·THAAD 등 미사일 다년 계약으로 생산 확대","스페이스X, AI 컴퓨팅 신규 고객 확보로 매출 급증 전망"]},{"id":"nv:market:37897","k":"market","d":"2026-10-23","b":"신한투자증권","t":"Global 헬스케어 Weekly(10월 4주차); 빅파마, ESMO 개최로 추가 여력 확보","u":"https://stock.naver.com/research/daily/37897","src":"네이버","o":"ESMO 학회 호재로 애브비·일라이릴리 등 빅파마 투심 개선 기대","tg":"업황","p":["애브비, 스카이리치·린버크 등 자가면역질환 치료제 매출 성장 지속 전망","일라이릴리, 2026년 비만약 가이던스 양호해 수요 견조 확인","ADC·이중항체 등 차세대 항암제 성과로 파이프라인 강화"],"tm":[{"t":"ADC","e":"항체에 약물을 붙여 암세포만 골라 공격하는 치료제"},{"t":"이중항체","e":"두 가지 표적을 한번에 공격하는 항체치료제"}]},{"id":"nv:market:37894","k":"market","d":"2026-10-23","b":"신한투자증권","t":"국내 주식 마감 시황 - W자 반등 vs H&S 넥라인 이탈(10월 22일)","u":"https://stock.naver.com/research/daily/37894","src":"네이버","o":"메타 실적 소화하며 코스피·코스닥 동반 3%대 하락","tg":"이슈","p":["메타는 매출 26% 증가한 호실적에도 잉여현금흐름 적자 전환으로 투심 악화","코스피 장중 5500선 이탈, 전날 상승분보다 더 많이 반납","한국은행 금통위는 매파적 동결로 11월 추가 금리 인상 전망 키움"],"tm":[{"t":"금통위","e":"한국은행이 기준금리를 결정하는 회의"}]},{"id":"nv:market:37911","k":"market","d":"2026-10-23","b":"유안타증권","t":"유안타 AI 미국 주식시장 마감 시황 (26.10.23)","u":"https://stock.naver.com/research/daily/37911","src":"네이버","o":"AI 지출 우려로 나스닥 급락, 방어주·중소형주는 선방","tg":"이슈","p":["메타 주가 7% 하락 등 AI 성장 핵심주 중심으로 매도세 확산","미국 10년물 국채금리, 2023년 이후 최대폭으로 하락","필수소비재·유틸리티 등 방어주와 중소형주는 상대적으로 견조"]},{"id":"nv:market:37910","k":"market","d":"2026-10-23","b":"유안타증권","t":"[주식시황 위클리] 주간:知 - 와신상담(臥薪嘗膽)의 자세 (10월 5주)","u":"https://stock.naver.com/research/daily/37910","src":"네이버","o":"외국인 수급 공백에 코스피·코스닥 반등 실패, 혼조 마감","tg":"시장 전망","p":["10/16~22일 코스피 -0.4%, 코스닥 +0.4%, 전주 급락 후 반등 실패","외국인 수급 공백과 신용위험 우려 겹치며 신흥국 전반 매물 출회","조선·IT가전·화학·통신 하락, 건설·건강관리·보험 등은 상승"]},{"id":"nv:market:37909","k":"market","d":"2026-10-23","b":"유안타증권","t":"국내주식 마감 시황 (26.10.22) - 와신상담","u":"https://stock.naver.com/research/daily/37909","src":"네이버","o":"미 증시 호실적에도 반도체는 경계감 속 약세, 유가 반등에 위험회피 확대","tg":"시장 전망","p":["미국 3대 지수 상승, 필라델피아 반도체지수도 2.0% 반등","램리서치 실적과 가이던스 모두 예상 상회했지만 시간외 약 6% 하락","부품 공급 제약과 중국 매출 비중 축소 전망이 주가에 부담"]},{"id":"hk:653227","k":"market","d":"2026-10-23","b":"유안타증권","t":"YUANTA DAILY MARKET VIEW","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653227","src":"한경","o":"국내외 증시·환율·원자재 등 데일리 시장 지표 모음","tg":"기타"},{"id":"nv:market:37907","k":"market","d":"2026-10-23","b":"유진투자증권","t":"Eugene Daily Snapshot - 코스피 4/7일 이후 최저 종가 & 저점 하향 지속","u":"https://stock.naver.com/research/daily/37907","src":"네이버","o":"AI 투자 부담 재부각에 코스피 4월 이후 최저치로 급락","tg":"시장 전망","p":["SK하이닉스 자사주 매입 종료로 코스피 수급 공백 발생, 테슬라 매출 감소로 2차전지주는 별도로 약세"],"tm":[{"t":"FCF","e":"기업이 실제 자유롭게 쓸 수 있는 현금"}]},{"id":"hk:653223","k":"market","d":"2026-10-23","b":"한화투자증권","t":"한화 주간전략","u":"https://consensus.hankyung.com/analysis/downpdf?report_idx=653223","src":"한경","o":"다음주 국내외 기업 실적 발표와 주요 일정 정리한 캘린더","tg":"기타"},{"id":"nv:invest:40565","k":"invest","d":"2026-10-23","b":"IBK투자증권","t":"[IBKS Market Comment] 유가 안정이 절실히 필요한 시점","u":"https://stock.naver.com/research/invest/40565","src":"네이버","o":"중동 리스크로 유가 상승 지속, 내년 경기 우려 점증","tg":"업황","p":["브렌트유 113달러, WTI 100달러 근접까지 상승","현 수준에서 5% 더 오르면 지난 봄 고점을 상향 돌파할 것으로 전망","유가와 AI 업황 우려가 동시에 완화돼야 증시 반등 가능할 것으로 판단"]},{"id":"nv:invest:40564","k":"invest","d":"2026-10-23","b":"IBK투자증권","t":"[IBKS Daily] Start with IBKS(2026.10.23) 호미질의 결실, 한국은행 기준금리 3.0% 동결","u":"https://stock.naver.com/research/invest/40564","src":"네이버","o":"AI 수익성 우려와 반도체 수급 불안에 코스피·코스닥 급락","tg":"시장 전망","p":["코스피 전일 대비 3.52% 하락한 5,533.77로 마감","코스닥도 외국인·기관 순매도로 3.62% 하락한 764.10 마감","한국은행 금통위, 기준금리 3.0% 만장일치 동결"],"tm":[{"t":"금통위","e":"한국은행이 기준금리를 결정하는 회의"}]},{"id":"nv:invest:40559","k":"invest","d":"2026-10-23","b":"SK증권","t":"ESG snapshot","u":"https://stock.naver.com/research/invest/40559","src":"네이버","o":"한국 녹색전환 전략 K-GX 발표, 국제 지속가능금융도 기준 확대","tg":"이슈","p":["10월 7일 K-GX 발표, 10년간 1,000조원 투자로 탈탄소 경쟁력 강화 추진","2030년 재생에너지 100GW 조기 달성과 전력망 개선 목표로 제시","JPMorgan은 투자 적격성 범주를 넓혀 지속가능금융 전략 재조정"],"tm":[{"t":"K-GX","e":"한국형 녹색대전환, 탈탄소 산업 육성 국가전략"},{"t":"ESFR","e":"JPMorgan이 만든 저탄소에너지 금융지원 비중 지표"}]},{"id":"nv:invest:40567","k":"invest","d":"2026-10-23","b":"대신증권","t":"메타·테슬라 호실적에도 안도감 부족, 수급 완충력까지 약화","u":"https://stock.naver.com/research/invest/40567","src":"네이버","o":"메타·테슬라 실적 호조에도 AI 투자심리 회복은 지연","tg":"시장 전망","p":["메타 3분기 매출 예상치 상회했으나 법적비용 반영으로 영업이익 전년比 37% 감소","테슬라도 매출 예상치 상회했지만 설비투자 축소로 AI 투자 지속성 의구심 부각","램리서치도 사상 최대 매출 기록에도 기대치 못미쳐 시간외 매물 출회"]},{"id":"nv:invest:40566","k":"invest","d":"2026-10-23","b":"대신증권","t":"[다음주 시장은?] AI 투자심리 반전의 실마리. 국내외 주요 기업 실적발표 주목","u":"https://stock.naver.com/research/invest/40566","src":"네이버","o":"AI 투자심리 반전 실마리, 다음주 빅테크 실적과 반도체 주주환원 주목","tg":"시장 전망","p":["코스피 12개월 선행 PER 4.23배로 밸류에이션 정상화 여지 충분하다고 판단","스페이스X·슈퍼마이크로는 호실적, 메타·테슬라는 투자부담 우려로 시장 반응 엇갈림","10월 FOMC 금리동결 확률 87%로 상승, 다음주 MS·알파벳·아마존 등 실적 발표 예정"],"tm":[{"t":"PER","e":"주가를 주당순이익으로 나눈 값, 낮을수록 주가가 이익 대비 저평가됐다는 뜻"}]},{"id":"nv:invest:40569","k":"invest","d":"2026-10-23","b":"신한투자증권","t":"Shinhan China Weekly(10월 4주차)","u":"https://stock.naver.com/research/invest/40569","src":"네이버","o":"AI 투자 우려와 CATL 실적 충격에 중국 기술주 급락","tg":"시장 전망","p":["엔비디아 CPO 공급망 증설 발표로 중국 광통신업체 참여 우려 확대돼 Innolight 등 급락","CATL 3분기 매출 58.6% 늘었지만 순이익 증가율은 14.5%에 그쳐 수익성 둔화","단기 반등은 미국 AI 투자심리 안정과 중국 주도주 실적 검증에 달려있다고 진단"],"tm":[{"t":"CPO","e":"광학소자를 칩 가까이 붙여 데이터 전송 속도를 높이는 기술"},{"t":"GPM","e":"매출에서 매출원가를 뺀 매출이익률"}]},{"id":"nv:invest:40563","k":"invest","d":"2026-10-23","b":"신한투자증권","t":"신한 M.R.I: 금리가 올라도 걱정, 내려도 걱정?","u":"https://stock.naver.com/research/invest/40563","src":"네이버","o":"스페이스X·슈퍼마이크로 호재로 바닥 재확인, 금리 불확실성 지속","tg":"시장 전망","p":["주간 코스피 2.4%, 코스닥 3.9% 하락","스페이스X AI 부문 매출 전년比 830% 급증하며 흑자전환, AI 수익성 우려 완화","SK하이닉스 자사주 매입 40조원 목표 채우고 21일 종료, 11월 금리인상 전망 확대"]},{"id":"nv:invest:40562","k":"invest","d":"2026-10-23","b":"신한투자증권","t":"2027년 미리보기 ②비트코인 가격 전망","u":"https://stock.naver.com/research/invest/40562","src":"네이버","o":"다음 비트코인 고점은 2029년, 2027년은 회복기로 전망","tg":"시장 전망","p":["과거 사이클상 반감기 이후 17~18개월 만에 가격 고점 형성됐던 패턴","2028년 4월 반감기 기준 2029년 하반기가 다음 고점 시기로 추정","현물 ETF 기관자금 유입 확대로 상승 시기가 앞당겨질 가능성도 있음"],"tm":[{"t":"반감기","e":"비트코인 채굴 보상이 4년마다 절반으로 줄어드는 시점"}]},{"id":"nv:invest:40558","k":"invest","d":"2026-10-23","b":"신한투자증권","t":"빅파마의 시간","u":"https://stock.naver.com/research/invest/40558","src":"네이버","o":"변동성 낮은 빅파마 매력 부각, 대형 이벤트로 추가 상승 기대","tg":"업황","p":["상반기엔 반도체 쏠림으로 헬스케어 섹터 매력도 크게 하락","6월부터 RNA 신약·항암제 기대감에 바이오텍 반등 시작","10월말~내년초 종양학회·비만학회 등 이벤트가 주가 상승 동력될 전망"]},{"id":"nv:invest:40568","k":"invest","d":"2026-10-23","b":"유안타증권","t":"[QWER] 10월 4주차 - 3분기 실적시즌 스크리닝 전략","u":"https://stock.naver.com/research/invest/40568","src":"네이버","o":"3분기 실적시즌, 서프라이즈 종목 선별과 비중조절 전략 제시","tg":"투자 전략","p":["환율 급락에도 기업이익 설명력은 낮고, 업황이 더 핵심 변수가 될 전망","7월 이후 개인 매수세 둔화로 외국인 수급 민감도 확대","실적발표 전 서프라이즈 예상 종목 선별 후 발표 후 비중조절하는 전략 제안"]},{"id":"nv:invest:40561","k":"invest","d":"2026-10-23","b":"키움증권","t":"10/23 달러, 국채금리 하락 속 약세","u":"https://stock.naver.com/research/invest/40561","src":"네이버","o":"AI 신용 우려로 미 국채금리 급락, 엔화 강세에 달러 약세","tg":"시장 전망","p":["AI 투자 수익성 우려로 위험회피 확대되며 미 10년물 국채금리 5% 하회","안전자산 선호 속 엔화가 달러 대비 0.75% 상승해 달러 약세 주도","중동 공급 차질 우려로 국제유가 상승, 인플레이션 경계 자극"],"tm":[{"t":"안전자산 선호","e":"위험할 때 돈이 몰리는 안전한 자산(엔화·금 등)을 사려는 심리"}]},{"id":"nv:invest:40560","k":"invest","d":"2026-10-23","b":"키움증권","t":"10/23, 매번 확인하고 가야하는 어려운 장세 속에서 반전의 재료를 찾는 과정","u":"https://stock.naver.com/research/invest/40560","src":"네이버","o":"메타 현금흐름 악화로 AI 신용우려 재확산, 변동성 장세 지속 전망","tg":"시장 전망","p":["메타 잉여현금흐름 전분기 흑자에서 이번분기 적자로 전환, AI주 급락 촉발","전일 코스피 3.5% 급락했지만 국내외 AI주 과매도 영역 진입으로 추가급락 여지 낮음","다음주 알파벳·아마존·MS 실적과 중동 리스크 완화 여부가 분위기 반전 계기될 듯"],"tm":[{"t":"CDS 프리미엄","e":"기업 부도 위험에 대비하는 보험료 성격의 지표, 높을수록 신용위험 크다는 뜻"}]},{"id":"nv:economy:13938","k":"economy","d":"2026-10-23","b":"IBK투자증권","t":"[IBKS Economy Monitor] Focus on Week: 신용위험의 경로와 2023년의 교훈","u":"https://stock.naver.com/research/economy/13938","src":"네이버","o":"신용위험 도화선은 AI 아닌 소외된 부실기업일 가능성 크다고 봄","tg":"이슈","p":["CCC등급 정크본드 가산금리 가파르게 상승, 경계 신호로 해석","미국 회사채 스트레스지수 상승, 자금조달 여건 악화로 판단","신용위험 확산이 결국 AI 기업 투자 조정시켜 경기사이클 마무리될 전망"],"tm":[{"t":"정크본드","e":"신용도가 낮은 기업이 발행하는 고위험·고금리 채권"}]},{"id":"nv:economy:13937","k":"economy","d":"2026-10-23","b":"iM증권","t":"AI발 안전자산 초강세, 주목해야 할 지표는","u":"https://stock.naver.com/research/economy/13937","src":"네이버","o":"미 국채·엔화 동반 강세, 경기침체 우려 반영","tg":"이슈","p":["미 10년 국채금리 4.959%로 하락, 5%선 하회는 9월23일 이후 처음","달러-엔 환율 156.76엔으로 0.87% 급락, 엔화 강세 전환","메타발 AI 투자 우려가 안전자산 선호 심리 자극한 계기로 해석"],"tm":[{"t":"안전자산","e":"경기 불안할 때 돈이 몰리는 자산, 미국 국채·엔화 등"}]},{"id":"nv:economy:13940","k":"economy","d":"2026-10-23","b":"키움증권","t":"10/23, Kiwoom Morning Letter","u":"https://stock.naver.com/research/economy/13940","src":"네이버","o":"AI 투자 의구심에 반도체 대형주 급락, 코스피·코스닥 동반 하락","tg":"기타","p":["삼성전자 -4.03%, SK하이닉스 -5.49% 급락이 지수 하락 주도","코스닥도 외국인·기관 동반 매도에 큰 폭 하락 마감"]},{"id":"nv:economy:13939","k":"economy","d":"2026-10-23","b":"키움증권","t":"(Macro Snapshot) AI 투자 기대의 현실화와 연준의 대응","u":"https://stock.naver.com/research/economy/13939","src":"네이버","o":"AI 투자 기대 재평가 국면, FOMC서 연준 성장 인식 주목","tg":"경제","p":["AI 투자 수익성·지속가능성 의구심 커지며 주식·금리 동반 하락","10월 FOMC에서 연준이 성장 둔화 우려 드러낼지가 관전포인트로 봄","금리 안정과 기업 실적 확인되면 투자심리 점차 회복될 것으로 봄"],"tm":[{"t":"FOMC","e":"미국 연준이 기준금리를 결정하는 회의"}]},{"id":"nv:economy:13936","k":"economy","d":"2026-10-23","b":"키움증권","t":"10/23 Weekly Macro : AI 투자 불확실성 속 연준의 경기 인식에 주목","u":"https://stock.naver.com/research/economy/13936","src":"네이버","o":"한미 3분기 성장률과 10월 FOMC가 다음주 핵심 변수","tg":"경제","p":["한국 3분기 성장률, 전기대비는 반도체 호조로 증가세 이어갈 전망","미국 3분기 성장률 전기대비 연율 3%대로 2분기보다 개선 전망","FOMC서 연준의 성장 평가가 내년 긴축 강도 기대 바꿀 수 있다고 봄"],"tm":[{"t":"FOMC","e":"미국 연준이 기준금리를 결정하는 회의"}]},{"id":"nv:debenture:11444","k":"debenture","d":"2026-10-23","b":"IBK투자증권","t":"[IBKS Bond Inside] 생Live의 이면, 움직이지 않을 자유","u":"https://stock.naver.com/research/debenture/11444","src":"네이버","o":"10월 금통위, 기준금리 3.00% 만장일치 동결로 본다","tg":"채권","p":["10월 금통위서 기준금리 3.00% 만장일치 동결, 소수의견 없었음","신현송 총재, 앞으로 소수의견이 금리 방향을 미리 암시하지 않을 것이라 설명","통화정책방향결정문의 '수출과 투자를 중심으로' 문구에 증권사가 주목, 두 지표가 예년치를 크게 넘는 비선형적 증가를 보인 점을 향후 분석해볼 지점으로 제시"],"tm":[{"t":"통방문","e":"금통위가 금리 결정 후 내는 공식 설명문"},{"t":"소수의견","e":"금통위원 중 다수 결정과 다른 의견을 낸 경우"}]},{"id":"nv:debenture:11442","k":"debenture","d":"2026-10-23","b":"SK증권","t":"[10월 금통위 Review] 동결. 11 월 인상 전망. 매파적 진단과 비둘기파적 경로","u":"https://stock.naver.com/research/debenture/11442","src":"네이버","o":"기준금리 3.00% 동결, SK증권은 11월 인상을 전망","tg":"채권","p":["10월 금통위 만장일치로 기준금리 3.00% 동결 결정","7~8월 연속 인상 효과를 점검하기 위한 조치로 풀이","앞으로 대외 변수보다 국내 물가 압력 등에 더 집중할 것으로 전망"],"tm":[{"t":"금통위","e":"한국은행이 기준금리를 정하는 회의"}]},{"id":"nv:debenture:11446","k":"debenture","d":"2026-10-23","b":"대신증권","t":"10월 금통위 “추가 인상 시기와 속도 검토”","u":"https://stock.naver.com/research/debenture/11446","src":"네이버","o":"기준금리 3.00%로 동결, 추가 인상 시기·속도는 검토 중","tg":"경제","p":["10월 금통위서 기준금리 3.00% 동결, 만장일치로 결정","7·8월 연속 인상 뒤 잠시 쉬어가는 행보로 해석"],"tm":[{"t":"금통위","e":"한국은행이 기준금리를 결정하는 회의"}]},{"id":"nv:debenture:11443","k":"debenture","d":"2026-10-23","b":"신한투자증권","t":"10월 금통위: 만장일치 < 긴축 필요성","u":"https://stock.naver.com/research/debenture/11443","src":"네이버","o":"금리는 동결됐지만 추가 긴축 경계는 여전","tg":"채권","p":["10월 기준금리 3.00% 만장일치 동결, 결정 자체는 비둘기파적으로 해석","대외 불확실성 확대와 경기 판단 상향 고려하면 추가 긴축 필요성 남아있음"],"tm":[{"t":"비둘기파적","e":"금리를 올리기보다 유지·완화하려는 성향"}]},{"id":"nv:debenture:11447","k":"debenture","d":"2026-10-23","b":"유안타증권","t":"채권 Daily (2026.10.23)","u":"https://stock.naver.com/research/debenture/11447","src":"네이버","o":"금통위 동결 속 금리는 혼조, 원화는 강세로 하락","tg":"채권","p":["국고채 금리, 금통위 동결과 긴축 유지 발언 사이 중단기 상승·장기 하락 혼조","달러-원 환율 1,324.20원, 전일대비 1.00원 하락"]},{"id":"nv:debenture:11445","k":"debenture","d":"2026-10-23","b":"유진투자증권","t":"Eugenes FICC Update","u":"https://stock.naver.com/research/debenture/11445","src":"네이버","o":"10월 금통위 매파적 동결, 채권시장 영향은 제한적","tg":"채권","p":["기자회견서 경기 자신감과 인상 기조 유지 확인됐으나 예상 범위 내 발언","물가목표 달성 시점 유연하다는 발언 이후 금리 상승분 대부분 반납"],"tm":[{"t":"매파적","e":"금리를 올리거나 긴축에 무게를 두는 태도"}]}],"counts":{"n":125,"comp":49,"up":16,"down":15,"new":1,"same":7,"kinds":{"company":49,"industry":22,"market":31,"invest":12,"economy":5,"debenture":6}},"mood":{"d":"2026-10-23","share":34.6,"up":113,"down":214,"pct":18,"label":"평소보다 내리는 쪽","med10":52.6,"weekly":[["2023-10-27",32.7],["2023-11-03",29.8],["2023-11-10",27.1],["2023-11-17",29.6],["2023-11-24",30.2],["2023-12-01",33.0],["2023-12-08",40.4],["2023-12-15",44.8],["2023-12-22",52.9],["2023-12-29",59.3],["2024-01-05",61.5],["2024-01-12",56.7],["2024-01-19",45.2],["2024-01-26",45.5],["2024-02-02",35.8],["2024-02-09",40.9],["2024-02-16",49.3],["2024-02-23",49.1],["2024-03-01",58.5],["2024-03-08",61.5],["2024-03-15",54.8],["2024-03-22",59.9],["2024-03-29",63.1],["2024-04-05",63.9],["2024-04-12",62.6],["2024-04-19",61.4],["2024-04-26",58.9],["2024-05-03",63.5],["2024-05-10",58.6],["2024-05-17",62.0],["2024-05-24",62.6],["2024-05-31",59.9],["2024-06-07",71.2],["2024-06-14",68.6],["2024-06-21",73.5],["2024-06-28",66.7],["2024-07-05",57.5],["2024-07-12",58.2],["2024-07-19",54.9],["2024-07-26",60.3],["2024-08-02",59.8],["2024-08-09",52.1],["2024-08-16",49.5],["2024-08-23",44.8],["2024-08-30",37.7],["2024-09-06",44.3],["2024-09-13",47.0],["2024-09-20",48.9],["2024-09-27",47.1],["2024-10-04",34.0],["2024-10-11",39.2],["2024-10-18",43.2],["2024-10-25",40.3],["2024-11-01",42.8],["2024-11-08",42.1],["2024-11-15",38.6],["2024-11-22",37.9],["2024-11-29",36.4],["2024-12-06",34.5],["2024-12-13",34.1],["2024-12-20",41.7],["2024-12-27",39.5],["2025-01-03",37.2],["2025-01-10",27.5],["2025-01-17",28.3],["2025-01-24",31.4],["2025-01-31",32.5],["2025-02-07",38.1],["2025-02-14",44.7],["2025-02-21",47.8],["2025-02-28",48.5],["2025-03-07",52.7],["2025-03-14",53.5],["2025-03-21",54.9],["2025-03-28",62.2],["2025-04-04",59.0],["2025-04-11",51.9],["2025-04-18",45.5],["2025-04-25",45.2],["2025-05-02",46.4],["2025-05-09",50.1],["2025-05-16",51.8],["2025-05-23",52.9],["2025-05-30",54.7],["2025-06-06",53.3],["2025-06-13",60.5],["2025-06-20",61.5],["2025-06-27",78.2],["2025-07-04",82.1],["2025-07-11",82.6],["2025-07-18",83.6],["2025-07-25",83.6],["2025-08-01",82.6],["2025-08-08",84.0],["2025-08-15",81.5],["2025-08-22",77.4],["2025-08-29",74.8],["2025-09-05",67.3],["2025-09-12",66.7],["2025-09-19",77.7],["2025-09-26",82.9],["2025-10-03",82.5],["2025-10-10",83.2],["2025-10-17",81.6],["2025-10-24",78.0],["2025-10-31",82.3],["2025-11-07",79.3],["2025-11-14",75.7],["2025-11-21",76.0],["2025-11-28",71.1],["2025-12-05",69.9],["2025-12-12",79.0],["2025-12-19",81.3],["2025-12-26",88.5],["2026-01-02",82.3],["2026-01-09",77.3],["2026-01-16",71.6],["2026-01-23",72.9],["2026-01-30",78.9],["2026-02-06",83.5],["2026-02-13",84.8],["2026-02-20",86.5],["2026-02-27",85.6],["2026-03-06",83.7],["2026-03-13",89.0],["2026-03-20",90.0],["2026-03-27",91.7],["2026-04-03",87.8],["2026-04-10",86.5],["2026-04-17",78.3],["2026-04-24",78.2],["2026-05-01",83.0],["2026-05-08",83.3],["2026-05-15",82.2],["2026-05-22",82.4],["2026-05-29",78.7],["2026-06-05",76.4],["2026-06-12",83.0],["2026-06-19",85.5],["2026-06-26",87.4],["2026-07-03",84.9],["2026-07-10",73.5],["2026-07-17",62.1],["2026-07-24",55.9],["2026-07-31",42.5],["2026-08-07",36.1],["2026-08-14",37.4],["2026-08-21",36.4],["2026-08-28",39.9],["2026-09-04",47.2],["2026-09-11",50.9],["2026-09-18",58.3],["2026-09-25",53.8],["2026-10-02",51.4],["2026-10-09",45.3],["2026-10-16",37.8],["2026-10-23",34.6]]},"hit":{"n":31085,"rate":41.8,"up":35.4,"ret":-0.6,"first":"2021-10-01","last":"2025-10-22","days":122,"buckets":[{"name":"목표가가 10% 안쪽 위","n":1506,"rate":90.0,"up":1.1,"ret":-2.6},{"name":"10~30% 위","n":9975,"rate":56.4,"up":23.0,"ret":2.0},{"name":"30~50% 위","n":12515,"rate":36.4,"up":38.6,"ret":-1.8},{"name":"50% 넘게 위","n":7089,"rate":20.6,"up":62.4,"ret":-1.4}],"years":[{"y":"2021","n":1675,"rate":14.6,"up":38.5,"ret":-22.0},{"y":"2022","n":6045,"rate":21.5,"up":40.5,"ret":-9.6},{"y":"2023","n":7872,"rate":36.5,"up":35.1,"ret":-5.7},{"y":"2024","n":8494,"rate":40.9,"up":34.3,"ret":1.5},{"y":"2025","n":6999,"rate":72.9,"up":31.9,"ret":26.9}]},"ver":{"start":"2010-01","end":"2026-09","months":201,"indep3":66,"corr_past3":0.7,"corr_next1":0.09,"corr_next3":0.2,"corr_mom":0.25,"median_share":51.2,"terciles":{"cut":[44.6,62.9],"high":{"n":66,"avg":6.6,"pos":68,"past":11.8},"mid":{"n":66,"avg":-0.3,"pos":48,"past":0.9},"low":{"n":66,"avg":1.9,"pos":65,"past":-3.9}},"verdict":"뒤따름","line":"증권사 목표가는 주가가 오른 뒤에 올리고 빠진 뒤에 내리는 편이었습니다(지난 3개월 코스피와 상관 0.70). 앞날과 보이는 관계(0.20)도 대부분 이미 진행 중인 주가 흐름 때문이라, 그 흐름을 빼면 0.03만 남습니다. 사고팔 신호로 쓰지 않습니다.","yearly":{"2010":12944,"2011":13813,"2012":15318,"2013":16177,"2014":12734,"2015":14383,"2016":18494,"2017":19577,"2018":17417,"2019":14002,"2020":11048,"2021":8172,"2022":5634,"2023":7158,"2024":7947,"2025":8118,"2026":7060},"partial3":0.03},"buy":{"n":9275,"buy":96.1,"hold":3.8,"sell":0.1},"kinds":{"company":"종목","industry":"산업","market":"시황","invest":"투자전략","economy":"경제","debenture":"채권"}};
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const isNum = v => typeof v === 'number' && isFinite(v);
+const num = (v, d = 0) => isNum(v) ? v.toLocaleString('ko-KR', {minimumFractionDigits: d, maximumFractionDigits: d}) : '–';
+const sgn = (v, d = 1, u = '%') => isNum(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(d) + u : '–';
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const store = { get(k, d) { try { const v = localStorage.getItem('sg.' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+                set(k, v) { try { localStorage.setItem('sg.' + k, JSON.stringify(v)); } catch (e) {} } };
+const MD = d => { if (!d) return ''; const [y, m, dd] = d.split('-').map(Number); return `${m}/${dd}(${'일월화수목금토'[new Date(y, m - 1, dd).getDay()]})`; };
+const HM = s => s ? s.slice(11, 16) : '';
+const PD = (p, d) => p.slice(0, 4) === (d || '').slice(0, 4) ? `${+p.slice(5, 7)}/${+p.slice(8, 10)}` : `${p.slice(2, 4)}.${+p.slice(5, 7)}`;   // 직전 리포트 날짜(같은 해면 월/일, 아니면 연.월)
+const KIND = R.kinds;
+const OPN = {buy: '매수', hold: '중립', sell: '매도'};
+let DAY = {asof: R.asof, brief: R.brief, items: R.items, counts: R.counts};
+const BY = {};
+
+function goalText(x, short = false) {
+  if (!isNum(x.gp)) return x.op ? esc(x.op) : '';
+  const g = num(x.gp) + '원';
+  if (x.mv === 'up' || x.mv === 'down') return `${short ? '' : num(x.pg) + (x.pd ? `<span class="muted tiny">(${PD(x.pd, x.d)})</span>` : '') + ' → '}${g} <b class="${x.mv === 'up' ? 'up' : 'down'}">${sgn(x.ch)}</b>`;
+  if (x.mv === 'new') return `${g} <span class="tag">새로 다룸</span>`;
+  if (x.mv === 'same') return `${g} <span class="muted tiny">그대로</span>`;
+  return g;
+}
+function itemHTML(x, mode = '') {
+  BY[x.id] = x;
+  const comp = x.k === 'company';
+  const name = comp ? `${esc(x.n || '')}` : esc(x.t);
+  const meta = [esc(x.b), comp ? (OPN[x.ot] || esc(x.op || '')) : KIND[x.k], x.ind && !comp ? esc(x.ind) : ''].filter(Boolean).join(' · ');
+  const one = x.o || (comp ? x.t : '요점 준비 중');
+  return `<div class="it" data-id="${esc(x.id)}"><button class="ith" type="button" aria-expanded="false"><div class="top"><span class="nm">${name}</span><span class="meta">${meta}${x.oc ? ` <span class="tag ${x.oc === '낮춤' ? 'dn' : 'upc'}">의견 ${x.oc}</span>` : ''}${x.ck ? ' <span class="tag warn">숫자 확인</span>' : ''}</span>${comp && isNum(x.gp) ? `<span class="gp">${goalText(x)}</span>` : ''}</div>
+    <div class="one">${esc(one)}</div></button><div class="ex"></div></div>`;
+}
+function exHTML(x) {
+  const pts = (x.p || []).map(p => `<li>${esc(p)}</li>`).join('');
+  const tm = (x.tm || []).map(t => `<li><b>${esc(t.t)}</b>: ${esc(t.e)}</li>`).join('');
+  const comp = x.k === 'company';
+  return `${comp && x.t && x.o ? `<div class="small"><span class="muted">원래 제목</span> ${esc(x.t)}</div>` : ''}
+    ${pts ? `<ul>${pts}</ul>` : '<p class="small muted" style="margin:6px 0">요점이 아직 없습니다(자료가 짧거나 다음 갱신 때 씁니다). 원문에서 확인하세요.</p>'}
+    ${tm ? `<div class="tiny muted">용어</div><ul class="small">${tm}</ul>` : ''}
+    ${x.ck ? '<p class="small" style="margin:4px 0"><span class="tag warn">숫자 확인</span> 요점의 숫자 일부가 자료에서 확인되지 않았습니다. 원문으로 확인하세요.</p>' : ''}
+    <div class="tiny muted">${MD(x.d)} · ${esc(x.b)} · ${x.tg ? esc(x.tg) + ' · ' : ''}출처 ${esc(x.src)}${comp && isNum(x.px) ? ` · 리포트 날 주가 ${num(x.px)}원` : ''}${x.pd ? ` · 직전 목표가는 ${x.pd.replace(/-/g, '.')} 리포트` : ''}</div>
+    <div class="links"><a class="chip" href="${esc(x.u)}" target="_blank" rel="noopener">원문 보기 ↗</a>${comp && x.c ? `<a class="chip" href="../#stock=kr:${esc(x.c)}">주식 각도기 판독</a>` : ''}</div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('.ith'); if (!b) return;
+  const it = b.closest('.it'), x = BY[it.dataset.id];
+  if (!it.classList.contains('open') && x && !$('.ex', it).innerHTML) $('.ex', it).innerHTML = exHTML(x);
+  it.classList.toggle('open'); b.setAttribute('aria-expanded', it.classList.contains('open'));
+});
+const empty = t => `<div class="empty">${t}</div>`;
+
+function renderToday() {
+  const D = DAY, C = D.counts || {}, b = D.brief;
+  const latest = D.asof === R.asof;
+  $('#dayTitle').textContent = latest ? `${MD(D.asof)} 증권가 3줄` : `${MD(D.asof)} 증권가 3줄 (지난 날)`;
+  $('#dayChips').innerHTML = R.days.map(d => `<button class="chip${d === D.asof ? ' on' : ''}" data-day="${d}">${MD(d)}</button>`).join('');
+  const lines = b && b.three && b.three.length ? b.three : [
+    `종목 리포트 ${num(C.comp)}건 가운데 목표가 올림 ${num(C.up)}건, 내림 ${num(C.down)}건입니다.`,
+    '오늘 요점 정리는 아직 준비 중입니다.'];
+  const lab = ['증권가는 시장을 어떻게 보나', '목표가 흐름', '눈여겨볼 것'];
+  $('#threeBox').innerHTML = lines.map((l, i) => `<div class="three"><div class="n">${i + 1}</div><div><div class="k">${lab[i] || ''}</div><div class="h">${esc(l)}</div></div></div>`).join('')
+    + (b && b.check && b.check.length ? '<p class="tiny muted" style="margin:0 0 10px"><span class="tag warn">숫자 확인</span> 위 글의 숫자 일부가 리포트 요점에서 확인되지 않았습니다.</p>' : '');
+  const M = R.mood;
+  $('#kpis').innerHTML = `
+    <div class="kpi"><div class="k">리포트</div><div class="v">${num(C.n)}건</div><div class="d">종목 ${num(C.comp)} · 산업 ${num(C.kinds?.industry)} · 시황·전략 ${num((C.kinds?.market || 0) + (C.kinds?.invest || 0))} · 경제·채권 ${num((C.kinds?.economy || 0) + (C.kinds?.debenture || 0))}</div></div>
+    <div class="kpi"><div class="k">목표가 올림</div><div class="v up">${num(C.up)}건</div><div class="d">같은 증권사 직전 대비</div></div>
+    <div class="kpi"><div class="k">목표가 내림</div><div class="v down">${num(C.down)}건</div><div class="d">그대로 ${num(C.same)} · 새로 다룸 ${num(C.new)}</div></div>
+    ${M ? `<div class="kpi"><div class="k">증권가 분위기 (앞 4주)</div><div class="v">${esc(M.label)}</div><div class="d">목표가 바꾼 리포트 중 올림 ${num(M.share, 0)}% (10년 중간 ${num(M.med10, 0)}%) · <a href="#trust">앞날 신호 아님</a></div></div>` : ''}`;
+  $('#gen').innerHTML = `${MD(R.made.slice(0, 10))} ${HM(R.made)} 반영${R.next ? `<br>다음 ${MD(R.next.slice(0, 10))} ${HM(R.next)}` : ''}`;
+}
+function renderMoves() {
+  const comp = DAY.items.filter(x => x.k === 'company');
+  const up = comp.filter(x => x.mv === 'up').sort((a, b) => b.ch - a.ch), dn = comp.filter(x => x.mv === 'down').sort((a, b) => a.ch - b.ch);
+  $('#upN').textContent = `${up.length}건`; $('#dnN').textContent = `${dn.length}건`;
+  $('#upList').innerHTML = up.map(x => itemHTML(x)).join('') || empty('없습니다.');
+  $('#dnList').innerHTML = dn.map(x => itemHTML(x)).join('') || empty('없습니다.');
+  $('#ocList').innerHTML = comp.filter(x => x.oc).map(x => itemHTML(x, 'oc')).join('') || empty('의견을 바꾼 리포트가 없습니다.');
+  $('#newList').innerHTML = comp.filter(x => x.mv === 'new').map(x => itemHTML(x)).join('') || empty('없습니다.');
+}
+function renderSectors() {
+  const ind = DAY.items.filter(x => x.k === 'industry');
+  const g = {};
+  ind.forEach(x => { const k = x.ind || (x.sec || [])[0] || '기타'; (g[k] = g[k] || []).push(x); });
+  const keys = Object.keys(g).sort((a, b) => g[b].length - g[a].length);
+  $('#secBox').innerHTML = keys.map(k => `<div class="card"><h3>${esc(k)} <span class="muted small">${g[k].length}건</span></h3><div class="list">${g[k].map(x => itemHTML(x)).join('')}</div></div>`).join('')
+    || `<div class="card">${empty('이 날 업종 리포트가 없습니다.')}</div>`;
+}
+function renderMacro() {
+  const mk = DAY.items.filter(x => ['market', 'invest', 'economy', 'debenture'].includes(x.k));
+  const by = Object.fromEntries(mk.map(x => [x.id, x])), used = new Set();
+  const groups = (DAY.brief?.groups || []).map(gr => {
+    const xs = gr.ids.map(i => by[i]).filter(Boolean); xs.forEach(x => used.add(x.id));
+    return xs.length ? `<div class="card grp"><h3>${esc(gr.title)} <span class="muted small">${xs.length}건</span></h3><p class="gl">${esc(gr.line)}</p><div class="list">${xs.map(x => itemHTML(x)).join('')}</div></div>` : '';
+  }).join('');
+  const rest = mk.filter(x => !used.has(x.id));
+  $('#macroBox').innerHTML = (groups || '') + (rest.length ? `<div class="card grp"><h3>${groups ? '그 밖의 리포트' : '리포트'} <span class="muted small">${rest.length}건</span></h3><div class="list">${rest.map(x => itemHTML(x)).join('')}</div></div>` : '')
+    || `<div class="card">${empty('이 날 시황·경제 리포트가 없습니다.')}</div>`;
+}
+function renderAll() {
+  const q = $('#q').value.trim().toLowerCase();
+  const comp = DAY.items.filter(x => x.k === 'company').filter(x => !q || (x.n || '').toLowerCase().includes(q) || (x.b || '').toLowerCase().includes(q) || (x.c || '').startsWith(q))
+    .sort((a, b) => (a.n || '').localeCompare(b.n || '', 'ko'));
+  $('#allList').innerHTML = comp.map(x => itemHTML(x, 'all')).join('') || empty(q ? '찾는 종목이 이 날 리포트에 없습니다.' : '없습니다.');
+}
+function renderDay() { renderToday(); renderMoves(); renderSectors(); renderMacro(); renderAll(); }
+
+async function loadDay(d) {
+  if (d === DAY.asof) return;
+  if (d === R.asof) { DAY = {asof: R.asof, brief: R.brief, items: R.items, counts: R.counts}; renderDay(); return; }
+  try { const j = await fetch(`data/days/${d}.json?v=${R.made}`).then(r => r.json()); DAY = j; renderDay(); }
+  catch (e) { alert('그 날 자료를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'); }
+}
+$('#dayChips').addEventListener('click', e => { const b = e.target.closest('[data-day]'); if (b) loadDay(b.dataset.day); });
+$('#q').addEventListener('input', renderAll);
+
+function moodChart(el, M) {
+  const W = Math.max(300, Math.round(el.getBoundingClientRect().width || 500)), H = 220, m = {l: 34, r: 10, t: 10, b: 24};
+  const pts = M.weekly || []; if (pts.length < 5) { el.innerHTML = ''; return; }
+  const t = pts.map(p => new Date(p[0]).getTime()), v = pts.map(p => p[1]);
+  const lo = Math.max(0, Math.floor(Math.min(...v, M.med10) / 10) * 10), hi = Math.min(100, Math.ceil(Math.max(...v, M.med10) / 10) * 10);
+  const X = x => m.l + (x - t[0]) / (t.at(-1) - t[0]) * (W - m.l - m.r), Y = y => m.t + (hi - y) / (hi - lo || 1) * (H - m.t - m.b);
+  let g = '';
+  for (let y = lo; y <= hi; y += 10) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(y)}" y2="${Y(y)}" stroke="${css('--grid')}"/><text x="${m.l - 6}" y="${Y(y) + 4}" text-anchor="end" font-size="11" fill="${css('--muted')}">${y}%</text>`;
+  const y0 = new Date(t[0]).getFullYear(), y1 = new Date(t.at(-1)).getFullYear();
+  for (let y = y0 + 1; y <= y1; y++) { const x = X(new Date(y, 0, 1).getTime()); g += `<line x1="${x}" x2="${x}" y1="${m.t}" y2="${H - m.b}" stroke="${css('--grid')}"/><text x="${x}" y="${H - 6}" text-anchor="middle" font-size="11" fill="${css('--muted')}">${y}</text>`; }
+  g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(M.med10)}" y2="${Y(M.med10)}" stroke="${css('--muted')}" stroke-dasharray="4 4"/><text x="${W - m.r}" y="${Y(M.med10) - 5}" text-anchor="end" font-size="11" fill="${css('--muted')}">10년 중간 ${num(M.med10, 0)}%</text>`;
+  g += `<path d="${pts.map((p, i) => (i ? 'L' : 'M') + X(t[i]).toFixed(1) + ' ' + Y(v[i]).toFixed(1)).join('')}" fill="none" stroke="${css('--s1')}" stroke-width="2"/>`;
+  g += `<circle cx="${X(t.at(-1))}" cy="${Y(v.at(-1))}" r="4" fill="${css('--s1')}"/>`;
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="증권가 분위기 최근 3년">${g}</svg>`;
+}
+function renderTrust() {
+  const H = R.hit, V = R.ver || {}, M = R.mood, Bu = R.buy;
+  if (H) $('#hitLead').textContent = `${num(H.rate, 0)}%뿐입니다`;
+  $('#trustKpis').innerHTML = (H ? `<div class="kpi"><div class="k">목표가에 1년 안에 닿은 비율</div><div class="v">${num(H.rate, 0)}%</div><div class="d">${H.first.slice(0, 7).replace('-', '.')}~${H.last.slice(0, 7).replace('-', '.')} 리포트 ${num(H.n)}건, 수정주가 기준</div></div>
+     <div class="kpi"><div class="k">목표가는 보통 지금 값보다</div><div class="v">${sgn(H.up, 0)}</div><div class="d">중간값. 1년 뒤 실제 주가는 중간 ${sgn(H.ret, 0)}</div></div>` : '')
+    + (Bu ? `<div class="kpi"><div class="k">최근 1년 종목 리포트 의견</div><div class="v">매수 ${num(Bu.buy, 0)}%</div><div class="d">중립 ${num(Bu.hold, 0)}% · 매도 ${num(Bu.sell, 1)}% (${num(Bu.n)}건). '매수'가 기본값</div></div>` : '')
+    + (V.verdict ? `<div class="kpi"><div class="k">증권가 분위기와 코스피</div><div class="v">${V.verdict === '뒤따름' ? '주가를 뒤따름' : V.verdict === '앞섬' ? '앞서는 편' : '관계 약함'}</div><div class="d">${esc(V.start || '')}~${esc(V.end || '')} 달마다 비교</div></div>` : '');
+  if (H) {
+    $('#hitTable').innerHTML = `<table><thead><tr><th>목표가 위치(리포트 전날 주가 대비)</th><th>리포트</th><th>1년 안에 닿음</th><th>1년 뒤 주가</th></tr></thead><tbody>` +
+      H.buckets.filter(b => b.n).map(b => `<tr><td>${esc(b.name)}</td><td>${num(b.n)}</td><td><b>${num(b.rate, 0)}%</b></td><td class="${b.ret > 0 ? 'up' : 'down'}">${sgn(b.ret, 0)}</td></tr>`).join('') + '</tbody></table>';
+    $('#hitNote').innerHTML = `'닿음'은 리포트가 나온 뒤 1년 안에 종가가 한 번이라도 목표가 이상이었던 경우입니다(배당·액면분할 등은 수정주가로 맞춤). 목표가가 높게 잡힐수록 닿는 경우가 드물었습니다.${H.days ? ` 닿은 리포트는 중간 ${num(H.days)}일 걸렸습니다.` : ''} 주식 각도기 DB의 가격(최근 5년)으로 쟀기 때문에 그보다 오래된 리포트는 빠졌습니다.`;
+  }
+  if (M) { moodChart($('#moodChart'), M); $('#moodNote').innerHTML = `지금 ${num(M.share, 0)}% (${MD(M.d)}, 올림 ${num(M.up)}·내림 ${num(M.down)}건), 지난 10년 중 ${num(M.pct, 0)}번째 백분위로 '${esc(M.label)}'. 리포트는 늘 '올림'이 많은 편이라 50%가 아니라 10년 중간과 비교합니다.`; }
+  if (V.verdict) {
+    const T = V.terciles;
+    $('#verSub').textContent = `${V.start}~${V.end}, ${num(V.months)}개월`;
+    $('#verBox').innerHTML = `<p style="margin:0 0 8px;font-weight:650">${esc(V.line)}</p>
+      <div class="tw"><table><thead><tr><th>비교</th><th>상관(−1~1)</th><th class="l">뜻</th></tr></thead><tbody>
+      <tr><td>분위기 ↔ 지난 3개월 코스피</td><td><b>${num(V.corr_past3, 2)}</b></td><td class="l">클수록 '주가가 오른 뒤 목표가를 올림'</td></tr>
+      <tr><td>분위기 ↔ 다음 1개월 코스피</td><td><b>${num(V.corr_next1, 2)}</b></td><td class="l">클수록 앞날을 미리 알려 줌</td></tr>
+      <tr><td>분위기 ↔ 다음 3개월 코스피</td><td><b>${num(V.corr_next3, 2)}</b></td><td class="l">같은 뜻, 3개월</td></tr>
+      <tr><td class="muted">비교: 지난 3개월 ↔ 다음 3개월 코스피</td><td>${num(V.corr_mom, 2)}</td><td class="l muted">주가 흐름만 볼 때</td></tr>
+      ${isNum(V.partial3) ? `<tr><td>분위기 ↔ 다음 3개월, 주가 흐름을 뺀 뒤</td><td><b>${num(V.partial3, 2)}</b></td><td class="l">분위기만의 몫. 0에 가까우면 주가 흐름 말고 새로 알려 주는 것이 없음</td></tr>` : ''}</tbody></table></div>
+      ${T ? `<div class="tw" style="margin-top:10px"><table><thead><tr><th>분위기(달 말)</th><th>달 수</th><th>지난 3개월 코스피</th><th>다음 3개월 코스피</th><th>다음 3개월 오른 비율</th></tr></thead><tbody>
+      ${[['높음 (' + T.cut[1] + '% 이상)', T.high], ['중간', T.mid], ['낮음 (' + T.cut[0] + '% 미만)', T.low]].map(([n, g]) => g ? `<tr><td>${n}</td><td>${g.n}</td><td class="${g.past > 0 ? 'up' : 'down'}">${sgn(g.past)}</td><td class="${g.avg > 0 ? 'up' : 'down'}">${sgn(g.avg)}</td><td>${num(g.pos)}%</td></tr>` : '').join('')}</tbody></table></div>` : ''}
+      ${T && T.high && T.high.avg > T.mid.avg ? `<p class="small ink2" style="margin:8px 0 0">분위기가 높았던 달의 다음 3개월이 나았던 것은 그때 이미 주가가 오르던 중이었기 때문입니다(지난 3개월 평균 ${sgn(T.high.past)}). 오르는 흐름을 따라가는 건 주식 각도기의 추세 규칙이 이미 하고 있습니다.</p>` : ''}
+      <p class="small ink2" style="margin:8px 0 0">달마다 마지막 날의 분위기(앞 4주 동안 목표가를 바꾼 종목 리포트 중 올린 비율)와 코스피 수익률을 짝지었습니다. 3개월 앞 수익률은 달마다 겹쳐 실제보다 그럴듯해 보일 수 있습니다(겹치지 않는 3개월 구간은 약 ${num(V.indep3)}개). 이 숫자는 주식 각도기 '지금 할 일' 규칙에 넣지 않습니다.</p>`;
+  } else $('#verBox').innerHTML = empty('검증 자료를 준비 중입니다.');
+}
+const GLOSS = {
+  '목표가': '증권사 애널리스트가 "앞으로 1년쯤 이 값이 적당하다"고 적은 가격. 약속이 아니라 희망·추정입니다.',
+  '투자의견': '매수(Buy)·중립(Hold)·매도(Sell). 한국 리포트는 대부분 매수라, 중립으로 낮추는 것이 사실상 부정적 신호로 읽힙니다.',
+  '목표가 올림·내림': '같은 증권사가 같은 종목에 낸 바로 앞 리포트의 목표가와 비교한 것. 다른 증권사와는 비교하지 않습니다.',
+  '새로 다룸': '그 증권사가 1년 안에 그 종목 리포트를 낸 적이 없을 때. 흔히 "커버리지 개시"라고 합니다.',
+  '실적 미리보기': '실적 발표 전에 숫자를 미리 추정한 리포트(프리뷰). 발표 뒤 정리는 실적 돌아보기(리뷰).',
+  '컨센서스': '여러 증권사 전망의 평균. "컨센서스 하회"는 평균 예상보다 실적이 나쁘다는 뜻.',
+  '증권가 분위기': '앞 4주 동안 목표가를 바꾼 종목 리포트 중 올린 비율. 리포트는 원래 올림이 많아 10년 중간값과 비교합니다.',
+  '수정주가': '배당·액면분할·증자 등으로 생긴 가격 단절을 맞춘 주가. 목표가 적중을 잴 때 씁니다.',
+};
+function renderGloss() { $('#glossBox').innerHTML = Object.entries(GLOSS).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join(''); }
+
+function applyTheme(t) { if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme'); }
+applyTheme(store.get('theme', null));
+$('#themeBtn').addEventListener('click', () => {
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const cur = document.documentElement.getAttribute('data-theme') || (dark ? 'dark' : 'light');
+  const nx = cur === 'dark' ? 'light' : 'dark'; applyTheme(nx); store.set('theme', nx); renderTrust();
+});
+renderDay(); renderTrust(); renderGloss();
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(renderTrust, 200); });
+const secs = $$('section'), links = $$('nav.sec a');
+const io = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id)); }); }, {rootMargin: '-40% 0px -55% 0px'});
+secs.forEach(s => io.observe(s));
+</script>
+<script data-app="stock">
+/* 각도기 바: 네 각도기(뉴스·부동산·주식·코인)를 서로 잇는다. 코인은 2026-10-16에 네 번째로 더함.
+   원본은 C:\Users\jjang\각도기 공통\각도기바.js. 각 앱 만들기 코드가 화면 끝의 자리표시(README 참고)에
+   script 태그(data-app=앱 이름)로 끼워 넣는다. 고칠 땐 원본만 고치고 네 앱(과 리포트판)을 다시 만든다.
+   - 맨 위 한 줄: 네 앱의 지금 상태(각 앱이 내놓는 summary.json)와 다른 앱으로 가는 링크
+   - '네 시장 한눈에': 네 앱 요약을 펼쳐 봄
+   - 밝게/어둡게: 같은 주소(jjangguss-prog.github.io) 안이라 한 앱에서 바꾸면 모두 같이 바뀐다
+   - window.GK: 앱 코드가 다른 앱 주소를 만들거나 요약을 읽을 때 쓴다 */
+(() => {
+  const ME = (document.currentScript && document.currentScript.dataset.app) || '';
+  const BASE = 'https://jjangguss-prog.github.io/';
+  const APPS = [
+    {id: 'news', name: '뉴스 각도기', short: '뉴스', path: 'news-gakdogi/'},
+    {id: 'budongsan', name: '부동산 각도기', short: '부동산', path: 'budongsan-gakdogi/'},
+    {id: 'stock', name: '주식 각도기', short: '주식', path: 'stock-gakdogi/'},
+    {id: 'coin', name: '코인 각도기', short: '코인', path: 'coin-gakdogi/', soon: true},
+  ];
+  // 주식 각도기 안의 리포트판은 주식 줄 아래에 붙인다(앱으로 따로 세지 않는다)
+  const SUBS = {stock: [{id: 'reports', name: '증권사 리포트', path: 'stock-gakdogi/reports/'}]};
+  const app = id => APPS.find(a => a.id === id) || Object.values(SUBS).flat().find(a => a.id === id);
+  const url = (id, key, val) => BASE + app(id).path + (key ? '#' + key + (val != null ? '=' + encodeURIComponent(val) : '') : '');
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+  const LS = {get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+              set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }};
+  const cache = {};
+  const get = id => (cache['_' + id] = cache['_' + id] || fetch(BASE + app(id).path + 'summary.json?t=' + Date.now(), {cache: 'no-store'})
+    .then(r => r.ok ? r.json() : null).then(j => (cache[id] = j && j.v ? j : null)).catch(() => (cache[id] = null)));
+  window.GK = {me: ME, base: BASE, apps: APPS, url, get, cache};
+
+  // ── 밝게/어둡게 같이 쓰기 ──────────────────────────
+  const TK = 'gakdogi.theme';
+  const OWN = {stock: ['sg.theme', true], budongsan: ['ondo-theme', false], news: ['ng_theme', false]};   // 코인은 gakdogi.theme 를 바로 씀
+  const root = document.documentElement;
+  const t0 = LS.get(TK);
+  if ((t0 === 'dark' || t0 === 'light') && t0 !== root.getAttribute('data-theme')) {
+    root.setAttribute('data-theme', t0);
+    const own = OWN[ME]; if (own) LS.set(own[0], own[1] ? JSON.stringify(t0) : t0);
+    if (typeof renderAll === 'function') { try { renderAll(); } catch (e) {} }   // 그래프 색을 새 테마로
+  }
+  document.addEventListener('click', e => {
+    if (e.target.closest && e.target.closest('#themeBtn, #theme')) setTimeout(() => { const t = root.getAttribute('data-theme'); if (t) LS.set(TK, t); }, 0);
+  });
+
+  // ── 바 ─────────────────────────────────────────────
+  const css = `
+.gk-bar{--gk-bg:var(--surface,var(--panel,#fff));--gk-ink:var(--ink,var(--text,#111));--gk-mut:var(--muted,#777);--gk-line:var(--line,rgba(0,0,0,.1));--gk-raised:var(--raised,var(--panel2,#f4f4f4));
+  background:var(--gk-bg);color:var(--gk-ink);border-bottom:1px solid var(--gk-line);font:13px/1.45 system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;position:relative;z-index:25}
+.gk-row{max-width:1240px;margin:0 auto;padding:0 16px;display:flex;gap:8px;align-items:center}
+.gk-in{flex:1;min-width:0;display:flex;gap:4px;align-items:stretch;overflow-x:auto;scrollbar-width:none}
+.gk-in::-webkit-scrollbar{display:none}
+.gk-bar a.gk-i,.gk-bar span.gk-i{display:flex;gap:6px;align-items:baseline;padding:7px 10px;white-space:nowrap;text-decoration:none;color:inherit;border-radius:0;flex:1 1 0;min-width:0;max-width:440px}
+@media (max-width:600px){.gk-row{padding:0 10px;gap:4px}.gk-bar span.gk-i{flex:none;margin-right:4px}.gk-bar span.gk-i .gk-l{display:none}.gk-bar a.gk-i,.gk-bar span.gk-i{padding:7px 6px}}
+.gk-bar a.gk-i:hover{background:var(--gk-raised)}
+.gk-bar .gk-i b{font-weight:700}
+.gk-bar span.gk-i{box-shadow:inset 0 -2px 0 var(--gk-ink)}
+.gk-bar .gk-l{color:var(--gk-mut);overflow:hidden;text-overflow:ellipsis;min-width:0}
+.gk-bar .gk-ar{color:var(--gk-mut)}
+.gk-bar button.gk-t{flex:none;border:1px solid var(--gk-line);background:var(--gk-raised);color:inherit;border-radius:99px;padding:3px 10px;margin-top:4px;margin-bottom:4px;font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.gk-p{display:none;max-width:1240px;margin:0 auto;padding:4px 16px 14px}
+.gk-bar.open .gk-p{display:grid;grid-template-columns:repeat(var(--gk-n,4),minmax(0,1fr));gap:10px}
+@media (max-width:1100px){.gk-bar.open .gk-p{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.gk-bar.open .gk-p{grid-template-columns:1fr}}
+.gk-c{border:1px solid var(--gk-line);border-radius:12px;padding:10px 12px;background:var(--gk-raised);min-width:0}
+.gk-c h4{margin:0;font-size:14px;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}
+.gk-c h4 a{color:inherit}
+.gk-c h4 small{color:var(--gk-mut);font-weight:400;font-size:12px}
+.gk-c .gk-line{font-weight:650;font-size:14.5px;margin:4px 0 2px;line-height:1.4}
+.gk-c .gk-todo{color:var(--gk-mut);font-size:13px}
+.gk-c .gk-f{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px;font-size:12.5px}
+.gk-c .gk-f span b{font-variant-numeric:tabular-nums}
+.gk-c .gk-f i{font-style:normal;color:var(--gk-mut)}
+.gk-c .gk-lk{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.gk-c .gk-lk a{border:1px solid var(--gk-line);border-radius:99px;padding:2px 9px;font-size:12.5px;text-decoration:none;color:inherit;background:var(--gk-bg)}
+.gk-c .gk-sub{margin-top:8px;padding-top:6px;border-top:1px solid var(--gk-line);font-size:13px}
+.gk-note{grid-column:1/-1;color:var(--gk-mut);font-size:12px;margin:0}`;
+  const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+  const bar = document.createElement('div'); bar.className = 'gk-bar'; bar.setAttribute('role', 'navigation'); bar.setAttribute('aria-label', '각도기 앱 바로가기');
+  const ago = iso => { const h = (Date.now() - new Date(iso)) / 36e5; return !isFinite(h) ? '' : h < 1 ? '방금' : h < 24 ? `${Math.floor(h)}시간 전` : `${Math.floor(h / 24)}일 전`; };
+  const stale = iso => (Date.now() - new Date(iso)) / 36e5 > 30;
+  const item = a => {
+    const s = cache[a.id], line = s ? esc(s.line) + (stale(s.updated) ? ` <i class="gk-ar">(${ago(s.updated)})</i>` : '') : '';
+    if (a.id === ME) return `<span class="gk-i" aria-current="page"><b>${esc(a.short)}</b><span class="gk-l">${line || '지금 보는 곳'}</span></span>`;
+    return `<a class="gk-i" href="${url(a.id)}" title="${esc(a.name)} 열기${s ? ' · ' + esc(s.asof) : ''}"><b>${esc(a.short)}</b><span class="gk-l">${line || esc(a.name) + ' 열기'}</span><span class="gk-ar">›</span></a>`;
+  };
+  const facts = s => (s.facts || []).map(f => `<span>${esc(f.k)} <b>${esc(f.v)}</b>${f.d ? ` <i>${esc(f.d)}</i>` : ''}</span>`).join('');
+  const links = s => (s.links || []).map(l => `<a href="${esc(l.url)}">${esc(l.label)} ›</a>`).join('');
+  const cardOf = a => {
+    const s = cache[a.id], h = a.id === ME ? esc(a.name) : `<a href="${url(a.id)}">${esc(a.name)}</a>`;
+    if (!s) return `<div class="gk-c"><h4>${h}</h4><div class="gk-todo">요약을 불러오지 못했습니다. ${a.id === ME ? '' : `<a href="${url(a.id)}">열어서 보기 ›</a>`}</div></div>`;
+    const sub = (SUBS[a.id] || []).map(x => cache[x.id] ? `<div class="gk-sub"><b><a href="${url(x.id)}" style="color:inherit">${esc(x.name)}</a></b> <span class="gk-ar">${esc(cache[x.id].asof)}</span><div>${esc(cache[x.id].line)}</div></div>` : '').join('');
+    return `<div class="gk-c"><h4>${h}<small>${esc(s.asof)}${stale(s.updated) ? ` · ${ago(s.updated)} 갱신` : ''}</small></h4>
+      <div class="gk-line">${esc(s.line)}</div>${s.todo ? `<div class="gk-todo">${esc(s.todo)}</div>` : ''}
+      ${facts(s) ? `<div class="gk-f">${facts(s)}</div>` : ''}${links(s) ? `<div class="gk-lk">${links(s)}</div>` : ''}${sub}</div>`;
+  };
+  const open = () => LS.get('gakdogi.panel') === '1';
+  // soon: 새로 더한 앱은 그 앱 요약을 실제로 받아 왔을 때만 보인다(공개 주소가 아직 없으면 깨진 링크를 안 보이게)
+  const shown = () => APPS.filter(a => !a.soon || a.id === ME || cache[a.id]);
+  const draw = () => {
+    bar.classList.toggle('open', open());
+    const narrow = matchMedia('(max-width:600px)').matches;
+    const A = shown(), n = ['', '한', '두', '세', '네', '다섯'][A.length] || A.length;
+    bar.style.setProperty('--gk-n', A.length);
+    bar.innerHTML = `<div class="gk-row"><div class="gk-in">${A.map(item).join('')}</div><button class="gk-t" type="button" aria-expanded="${open()}">${open() ? '접기 ▴' : narrow ? '한눈에 ▾' : `${n} 시장 한눈에 ▾`}</button></div>
+      <div class="gk-p">${A.map(cardOf).join('')}<p class="gk-note">${n} 앱이 각자 갱신한 요약입니다(앱마다 갱신 시각이 다름). 판단 규칙은 앱끼리 섞지 않습니다. 투자 권유가 아닙니다.</p></div>`;
+  };
+  bar.addEventListener('click', e => { if (e.target.closest('button.gk-t')) { LS.set('gakdogi.panel', open() ? '0' : '1'); draw(); } });
+  draw();
+  document.body.insertBefore(bar, document.body.firstChild);
+  Promise.all([...APPS, ...Object.values(SUBS).flat()].map(a => get(a.id))).then(draw);
+})();
+
+</script>
+</body>
+</html>
