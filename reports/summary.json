@@ -1,0 +1,51 @@
+{
+ "v": 1,
+ "app": "reports",
+ "name": "증권사 리포트",
+ "url": "https://jjangguss-prog.github.io/stock-gakdogi/reports/",
+ "updated": "2026-10-16T23:05+09:00",
+ "asof": "10/16 리포트 · 23:05 반영",
+ "line": "리포트 134건 · 목표가 올림 4·내림 12 · 분위기 내리는 쪽",
+ "facts": [
+  {
+   "k": "오늘 리포트",
+   "v": "134건",
+   "d": "종목 45 · 산업 25"
+  },
+  {
+   "k": "목표가",
+   "v": "올림 4 · 내림 12",
+   "d": "새로 다룸 0"
+  },
+  {
+   "k": "증권가 분위기",
+   "v": "평소보다 내리는 쪽",
+   "d": "올림 비율 38% (10년 중간 53%)"
+  },
+  {
+   "k": "목표가 적중",
+   "v": "1년 안 42%",
+   "d": "리포트 30,926건 실측"
+  }
+ ],
+ "brief": [
+  "증권가는 전날 급락 해석이 엇갈리며 금통위·빅테크 실적을 다음 변수로 본다",
+  "목표가는 45건 중 올림 4건·내림 12건, 내림은 콘텐츠·바이오·자동차·원자력·반도체에 분산됐다",
+  "10월22일 한은 금통위와 저PBR 기업가치제고 공시 마감이 다음 관전포인트다"
+ ],
+ "links": [
+  {
+   "label": "오늘 3줄",
+   "url": "https://jjangguss-prog.github.io/stock-gakdogi/reports/#today"
+  },
+  {
+   "label": "목표가 바꾼 종목",
+   "url": "https://jjangguss-prog.github.io/stock-gakdogi/reports/#moves"
+  },
+  {
+   "label": "얼마나 믿을까",
+   "url": "https://jjangguss-prog.github.io/stock-gakdogi/reports/#trust"
+  }
+ ],
+ "street": "증권가는 전날 급락 해석이 엇갈리며 금통위·빅테크 실적을 다음 변수로 본다"
+}
